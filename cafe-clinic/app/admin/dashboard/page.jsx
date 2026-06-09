@@ -9,11 +9,30 @@ export default function AdminDashboard() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showCatModal, setShowCatModal] = useState(false);
+  const [notice, setNotice] = useState({ active: false, text: "" });
   const router = useRouter();
 
   useEffect(() => {
     fetchData();
+    fetchNotice();
   }, []);
+
+  const fetchNotice = async () => {
+    const res = await fetch("/api/notice");
+    if (res.ok) {
+      const data = await res.json();
+      setNotice(data);
+    }
+  };
+
+  const saveNotice = async () => {
+    await fetch("/api/notice", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(notice),
+    });
+    alert("اطلاعیه ذخیره شد!");
+  };
 
   const fetchData = async () => {
     const res = await fetch("/api/admin", {
@@ -38,10 +57,7 @@ export default function AdminDashboard() {
     await fetch("/api/admin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        action: "updatePrices",
-        data: { prices: newPrices },
-      }),
+      body: JSON.stringify({ action: "updatePrices", data: { prices: newPrices } }),
     });
   };
 
@@ -49,10 +65,7 @@ export default function AdminDashboard() {
     const res = await fetch("/api/admin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        action: "updateItem",
-        data: { categoryId, itemId, updatedItem: { [field]: value } },
-      }),
+      body: JSON.stringify({ action: "updateItem", data: { categoryId, itemId, updatedItem: { [field]: value } } }),
     });
     if (res.ok) {
       const newData = { ...data };
@@ -68,10 +81,7 @@ export default function AdminDashboard() {
       await fetch("/api/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "deleteItem",
-          data: { categoryId, itemId },
-        }),
+        body: JSON.stringify({ action: "deleteItem", data: { categoryId, itemId } }),
       });
       fetchData();
     }
@@ -80,19 +90,14 @@ export default function AdminDashboard() {
   const deleteCategory = async (categoryId) => {
     if (confirm("آیا از حذف این دسته‌بندی و تمام محصولات آن مطمئن هستید؟")) {
       const newData = { ...data };
-      newData.categories = newData.categories.filter(
-        (c) => c.id !== categoryId,
-      );
-
+      newData.categories = newData.categories.filter((c) => c.id !== categoryId);
       await fetch("/api/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "updateData", data: { data: newData } }),
       });
       fetchData();
-      if (selectedCategory?.id === categoryId) {
-        setSelectedCategory(null);
-      }
+      if (selectedCategory?.id === categoryId) setSelectedCategory(null);
     }
   };
 
@@ -101,10 +106,7 @@ export default function AdminDashboard() {
     await fetch("/api/admin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        action: "addItem",
-        data: { categoryId: selectedCategory.id, newItem },
-      }),
+      body: JSON.stringify({ action: "addItem", data: { categoryId: selectedCategory.id, newItem } }),
     });
     fetchData();
     setShowAddModal(false);
@@ -121,30 +123,55 @@ export default function AdminDashboard() {
   };
 
   const logout = () => {
-    document.cookie =
-      "admin_auth=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    document.cookie = "admin_auth=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     router.push("/admin/login");
   };
 
   if (loading) return <div className="p-8 text-center">در حال بارگذاری...</div>;
-  if (!data)
-    return <div className="p-8 text-center">خطا در بارگذاری اطلاعات</div>;
+  if (!data) return <div className="p-8 text-center">خطا در بارگذاری اطلاعات</div>;
 
   return (
     <div className="min-h-screen bg-gray-100" dir="rtl">
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">پنل مدیریت - {data.cafeName}</h1>
-          <button
-            onClick={logout}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          >
+          <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
             خروج
           </button>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
+
+        {/* GUNUN NOTU BOLUMU */}
+        <div className="bg-white rounded-lg shadow p-4 mb-6">
+          <h2 className="text-lg font-bold mb-3"> اطلاعیه روز</h2>
+          <textarea
+            value={notice.text}
+            onChange={(e) => setNotice({ ...notice, text: e.target.value })}
+            placeholder="متن اطلاعیه را اینجا بنویسید..."
+            className="w-full p-2 border rounded mb-3"
+            rows="3"
+          />
+          <div className="flex gap-3 items-center">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={notice.active}
+                onChange={(e) => setNotice({ ...notice, active: e.target.checked })}
+                className="w-4 h-4"
+              />
+              <span>{notice.active ? " فعال" : "❌ غیرفعال"}</span>
+            </label>
+            <button
+              onClick={saveNotice}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
+              ذخیره
+            </button>
+          </div>
+        </div>
+
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           {data.categories.map((cat) => (
             <button
@@ -167,9 +194,7 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-lg shadow">
             <div className="p-4 border-b flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <h2 className="text-xl font-semibold">
-                  {selectedCategory.name}
-                </h2>
+                <h2 className="text-xl font-semibold">{selectedCategory.name}</h2>
                 <button
                   onClick={() => deleteCategory(selectedCategory.id)}
                   className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
@@ -187,7 +212,7 @@ export default function AdminDashboard() {
 
             {selectedCategory.items.length === 0 ? (
               <div className="p-8 text-center text-gray-500">
-                هنوز محصولی اضافه نشده است. دکمه "محصول جدید" را بزنید.
+                هنوز محصولی اضافه نشده است.
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -209,14 +234,7 @@ export default function AdminDashboard() {
                           <input
                             type="text"
                             defaultValue={item.name}
-                            onBlur={(e) =>
-                              updateItemField(
-                                selectedCategory.id,
-                                item.id,
-                                "name",
-                                e.target.value,
-                              )
-                            }
+                            onBlur={(e) => updateItemField(selectedCategory.id, item.id, "name", e.target.value)}
                             className="w-full p-1 border rounded"
                           />
                         </td>
@@ -224,14 +242,7 @@ export default function AdminDashboard() {
                           <input
                             type="text"
                             defaultValue={item.description}
-                            onBlur={(e) =>
-                              updateItemField(
-                                selectedCategory.id,
-                                item.id,
-                                "description",
-                                e.target.value,
-                              )
-                            }
+                            onBlur={(e) => updateItemField(selectedCategory.id, item.id, "description", e.target.value)}
                             className="w-full p-1 border rounded"
                           />
                         </td>
@@ -241,14 +252,11 @@ export default function AdminDashboard() {
                             defaultValue={prices[item.id] || "0"}
                             onBlur={(e) => updatePrice(item.id, e.target.value)}
                             className="w-24 p-1 border rounded"
-                          />{" "}
-                          Toman
+                          /> Toman
                         </td>
                         <td className="px-4 py-2">
                           <button
-                            onClick={() =>
-                              deleteItem(selectedCategory.id, item.id)
-                            }
+                            onClick={() => deleteItem(selectedCategory.id, item.id)}
                             className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                           >
                             حذف
@@ -291,45 +299,16 @@ function AddItemModal({ onClose, onSave, categoryName }) {
     onClose();
   };
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      dir="rtl"
-    >
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" dir="rtl">
       <div className="bg-white rounded-lg p-6 w-96">
         <h2 className="text-xl font-bold mb-2">افزودن محصول جدید</h2>
-        <p className="text-gray-600 mb-4">
-          دسته‌بندی: <span className="font-semibold">{categoryName}</span>
-        </p>
+        <p className="text-gray-600 mb-4">دسته‌بندی: <span className="font-semibold">{categoryName}</span></p>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="نام محصول *"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 mb-3 border rounded"
-            required
-          />
-          <textarea
-            placeholder="توضیحات"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 mb-4 border rounded"
-            rows="3"
-          />
+          <input type="text" placeholder="نام محصول *" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2 mb-3 border rounded" required />
+          <textarea placeholder="توضیحات" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-2 mb-4 border rounded" rows="3" />
           <div className="flex gap-2">
-            <button
-              type="submit"
-              className="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-            >
-              افزودن
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-500 text-white py-2 rounded hover:bg-gray-600"
-            >
-              انصراف
-            </button>
+            <button type="submit" className="flex-1 bg-blue-500 text-white py-2 rounded hover:bg-blue-600">افزودن</button>
+            <button type="button" onClick={onClose} className="flex-1 bg-gray-500 text-white py-2 rounded hover:bg-gray-600">انصراف</button>
           </div>
         </form>
       </div>
@@ -343,38 +322,16 @@ function AddCategoryModal({ onClose, onSave }) {
     e.preventDefault();
     if (!name.trim()) return alert("لطفا نام دسته‌بندی را وارد کنید!");
     onSave({ name });
-    onClose();
   };
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      dir="rtl"
-    >
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" dir="rtl">
       <div className="bg-white rounded-lg p-6 w-96">
         <h2 className="text-xl font-bold mb-4">افزودن دسته‌بندی جدید</h2>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="نام دسته‌بندی *"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 mb-4 border rounded"
-            required
-          />
+          <input type="text" placeholder="نام دسته‌بندی *" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2 mb-4 border rounded" required />
           <div className="flex gap-2">
-            <button
-              type="submit"
-              className="flex-1 bg-green-500 text-white py-2 rounded hover:bg-green-600"
-            >
-              افزودن
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-500 text-white py-2 rounded hover:bg-gray-600"
-            >
-              انصراف
-            </button>
+            <button type="submit" className="flex-1 bg-green-500 text-white py-2 rounded hover:bg-green-600">افزودن</button>
+            <button type="button" onClick={onClose} className="flex-1 bg-gray-500 text-white py-2 rounded hover:bg-gray-600">انصراف</button>
           </div>
         </form>
       </div>

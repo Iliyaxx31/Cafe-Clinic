@@ -14,23 +14,25 @@ const Footer = ({ number, store, adres, logo }) => {
 
         <div className="flex items-center gap-3 shrink-0">
           <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-cyan-400/15 blur-sm scale-110 pointer-events-none" />
-            <div className="relative rounded-full p-[1.5px] bg-gradient-to-br from-cyan-400/50 to-blue-600/50">
-              <Image
-                src={logo || "/logo.png"}
-                alt="logo"
-                width={60}
-                height={60}
-                className="rounded-full px-1 py-0.5 shadow-[0_0_20px_aquamarine] object-cover block"
-              />
-            </div>
+            
+ <div className="bg-white/10 rounded-lg p-1">
+<div className="w-11 h-11 rounded-lg overflow-hidden shrink-0 bg-cyan-500/10">
+  <Image
+    src={logo || "/logo.png"}
+    alt="logo"
+    width={44}
+    height={44}
+    className="w-full h-full object-contain"
+  />
+</div>
+</div>
           </div>
           <div>
             <div className="flex items-center gap-1.5">
               <FaCoffee className="text-cyan-400 text-[10px]" />
-              <span className="text-white font-semibold text-sm tracking-wide">Cafe Clinic</span>
+              <span className="text-white font-semibold text-[12px] tracking-wide">Cafe Clinic</span>
             </div>
-            <p className="text-cyan-400/50 text-[10px] tracking-widest uppercase">Coffee & Drinks</p>
+            <p className="text-cyan-400/50 text-[8px] tracking-widest uppercase">Coffee & Drinks</p>
           </div>
         </div>
 
@@ -53,9 +55,8 @@ const Footer = ({ number, store, adres, logo }) => {
 
       </div>
 
-      {/* Alt copyright */}
       <div className="border-t border-white/5 py-2 text-center">
-        <p className="text-slate-600 text-[10px] tracking-widest uppercase">
+        <p className="text-slate-600 text-[10px]  tracking-widest uppercase">
           © Cafe Clinic &nbsp;·&nbsp; تمامی حقوق محفوظ است
         </p>
       </div>

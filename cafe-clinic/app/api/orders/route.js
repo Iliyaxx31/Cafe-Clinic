@@ -55,8 +55,23 @@ export async function POST(request) {
   orders.push(newOrder);
   await saveOrders(orders);
 
+  // WebSocket bildirimi
   if (global.io) {
     global.io.emit("new-order", newOrder);
+  }
+
+  // Bale bildirimi (İran içi)
+  const BALE_BOT_TOKEN = process.env.BALE_BOT_TOKEN;
+  const BALE_CHAT_ID = process.env.BALE_CHAT_ID;
+
+  if (BALE_BOT_TOKEN && BALE_CHAT_ID) {
+    const message = `🆕 سفارش جدید!\n👤 نام: ${customerName}\n📞 تلفن: ${customerPhone}\n📍 آدرس: ${customerAddress}\n💰 مبلغ: ${total.toLocaleString()} تومان\n🆔 شماره پیگیری: ${newOrder.id}`;
+    
+    fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: BALE_CHAT_ID, text: message }),
+    }).catch(err => console.error("Bale hatası:", err));
   }
 
   return NextResponse.json({ success: true, orderId: newOrder.id });

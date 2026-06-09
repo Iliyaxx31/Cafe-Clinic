@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { writeFileSafe } from "@/app/lib/fileLock";  // SADECE BUNU EKLE
 
 export async function POST(request) {
   try {
@@ -29,16 +30,14 @@ export async function POST(request) {
     }
 
     if (action === "updatePrices") {
-      // Güvenli yazma
-      const cleanJson = JSON.stringify(data.prices, null, 2);
-      await fs.writeFile(path.join(jsonDir, "price.json"), cleanJson, "utf-8");
+      // SADECE BURASI DEĞİŞTİ - writeFileSafe kullan
+      await writeFileSafe(path.join(jsonDir, "price.json"), data.prices);
       return NextResponse.json({ success: true });
     }
 
     if (action === "updateData") {
-      // Güvenli yazma
-      const cleanJson = JSON.stringify(data.data, null, 2);
-      await fs.writeFile(path.join(jsonDir, "data.json"), cleanJson, "utf-8");
+      // SADECE BURASI DEĞİŞTİ - writeFileSafe kullan
+      await writeFileSafe(path.join(jsonDir, "data.json"), data.data);
       return NextResponse.json({ success: true });
     }
 
@@ -66,22 +65,15 @@ export async function POST(request) {
 
       category.items.push(newItem);
 
-      // Güvenli yazma
-      await fs.writeFile(
-        path.join(jsonDir, "data.json"),
-        JSON.stringify(currentData, null, 2),
-        "utf-8",
-      );
+      // BURASI DEĞİŞTİ - writeFileSafe kullan
+      await writeFileSafe(path.join(jsonDir, "data.json"), currentData);
 
       const prices = JSON.parse(
         await fs.readFile(path.join(jsonDir, "price.json"), "utf-8"),
       );
       prices[newItem.id] = "0";
-      await fs.writeFile(
-        path.join(jsonDir, "price.json"),
-        JSON.stringify(prices, null, 2),
-        "utf-8",
-      );
+      // BURASI DEĞİŞTİ - writeFileSafe kullan
+      await writeFileSafe(path.join(jsonDir, "price.json"), prices);
 
       return NextResponse.json({ success: true, newId: newItem.id });
     }
@@ -110,12 +102,8 @@ export async function POST(request) {
         ...updatedItem,
       };
 
-      // Güvenli yazma
-      await fs.writeFile(
-        path.join(jsonDir, "data.json"),
-        JSON.stringify(currentData, null, 2),
-        "utf-8",
-      );
+      // BURASI DEĞİŞTİ - writeFileSafe kullan
+      await writeFileSafe(path.join(jsonDir, "data.json"), currentData);
       return NextResponse.json({ success: true });
     }
 
@@ -128,21 +116,15 @@ export async function POST(request) {
       const category = currentData.categories.find((c) => c.id === categoryId);
       category.items = category.items.filter((i) => i.id !== itemId);
 
-      await fs.writeFile(
-        path.join(jsonDir, "data.json"),
-        JSON.stringify(currentData, null, 2),
-        "utf-8",
-      );
+      // BURASI DEĞİŞTİ - writeFileSafe kullan
+      await writeFileSafe(path.join(jsonDir, "data.json"), currentData);
 
       const prices = JSON.parse(
         await fs.readFile(path.join(jsonDir, "price.json"), "utf-8"),
       );
       delete prices[itemId];
-      await fs.writeFile(
-        path.join(jsonDir, "price.json"),
-        JSON.stringify(prices, null, 2),
-        "utf-8",
-      );
+      // BURASI DEĞİŞTİ - writeFileSafe kullan
+      await writeFileSafe(path.join(jsonDir, "price.json"), prices);
 
       return NextResponse.json({ success: true });
     }
@@ -158,11 +140,8 @@ export async function POST(request) {
       newCategory.items = [];
 
       currentData.categories.push(newCategory);
-      await fs.writeFile(
-        path.join(jsonDir, "data.json"),
-        JSON.stringify(currentData, null, 2),
-        "utf-8",
-      );
+      // BURASI DEĞİŞTİ - writeFileSafe kullan
+      await writeFileSafe(path.join(jsonDir, "data.json"), currentData);
 
       return NextResponse.json({ success: true });
     }

@@ -7,7 +7,7 @@ const Header = ({ logo, coffeName }) => {
   const cafeName = data?.cafeName || "Spna Cafe";
 
   return (
-    <div className="w-screen object-cover flex-col h-40 items-center flex justify-center gap-4  bg-gradient-to-l from-[#fdf6e7] via-[#d1eefc] to-[#b3e0ff]">
+    <div className="w-[95hw] overflow-hidden object-cover flex-col h-40 items-center flex justify-center gap-4  bg-gradient-to-l from-[#fdf6e7] via-[#d1eefc] to-[#b3e0ff]">
       <Image
         className="min-w-[auto] h-[auto] mt-10 object-cover text-bold"
         src={logo}
