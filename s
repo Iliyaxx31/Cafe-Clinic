@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+.env
+.env.local
+cafe.db
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
