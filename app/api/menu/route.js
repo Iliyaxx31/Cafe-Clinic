@@ -1,22 +1,47 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import pool from "@/app/lib/db";
 
 export async function GET() {
   try {
-    const jsonDir = path.join(process.cwd(), "app/json");
-    const dataFile = await fs.readFile(
-      path.join(jsonDir, "data.json"),
-      "utf-8",
-    );
-    const priceFile = await fs.readFile(
-      path.join(jsonDir, "price.json"),
-      "utf-8",
-    );
+    // 1. Kategorileri ve ürünleri çek
+    const [categories] = await pool.query(`
+      SELECT 
+        c.id, 
+        c.name, 
+        c.icon,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'id', i.id,
+            'name', i.name,
+            'description', i.description,
+            'img', i.img
+          )
+        ) as items
+      FROM categories c
+      LEFT JOIN items i ON c.id = i.category_id
+      GROUP BY c.id
+      ORDER BY c.id ASC
+    `);
+
+    // items içindeki null'ları temizle
+    const formattedCategories = categories.map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      icon: cat.icon,
+      items: cat.items ? JSON.parse(cat.items).filter(item => item.id !== null) : []
+    }));
+
+    // 2. Fiyatları çek
+    const [prices] = await pool.query("SELECT item_id, price FROM prices");
+    const pricesMap = {};
+    prices.forEach(p => pricesMap[p.item_id] = p.price);
 
     return NextResponse.json({
-      data: JSON.parse(dataFile),
-      prices: JSON.parse(priceFile),
+      data: {
+        cafeName: "Cafe Clinic",
+        categories: formattedCategories
+      },
+      prices: pricesMap
     });
   } catch (error) {
     console.error("Menu API hatası:", error);

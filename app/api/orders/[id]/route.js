@@ -1,30 +1,23 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import pool from "@/app/lib/db";
 
-const ordersFile = path.join(process.cwd(), "app/json/orders.json");
-
-async function getOrders() {
-  try {
-    const data = await fs.readFile(ordersFile, "utf-8");
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-async function saveOrders(orders) {
-  await fs.writeFile(ordersFile, JSON.stringify(orders, null, 2));
-}
-
-// GET - Tek sipariş getir (müşteri takip)
+// GET - Tek sipariş getir (müşteri takip için)
 export async function GET(request, { params }) {
   const { id } = params;
-  const orders = await getOrders();
-  const order = orders.find((o) => o.id === parseInt(id));
-  if (!order) {
+  
+  const [rows] = await pool.query(
+    "SELECT * FROM orders WHERE order_id = ?",
+    [id]
+  );
+  
+  if (rows.length === 0) {
     return NextResponse.json({ error: "سفارش یافت نشد" }, { status: 404 });
   }
+  
+  const order = rows[0];
+  // items JSON string'ini parse et
+  order.items = JSON.parse(order.items);
+  
   return NextResponse.json(order);
 }
 
@@ -36,9 +29,7 @@ export async function DELETE(request, { params }) {
   }
   
   const { id } = params;
-  const orders = await getOrders();
-  const filteredOrders = orders.filter((o) => o.id !== parseInt(id));
-  await saveOrders(filteredOrders);
+  await pool.query("DELETE FROM orders WHERE order_id = ?", [id]);
   
   return NextResponse.json({ success: true });
 }

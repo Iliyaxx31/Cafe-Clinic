@@ -1,34 +1,43 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import pool from "@/app/lib/db";
 
-const ordersFile = path.join(process.cwd(), "app/json/orders.json");
-
-async function getOrders() {
-  try {
-    const data = await fs.readFile(ordersFile, "utf-8");
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-async function saveOrders(orders) {
-  await fs.writeFile(ordersFile, JSON.stringify(orders, null, 2));
-}
-
+// GET - Tüm siparişleri getir (admin için)
 export async function GET(request) {
   const authCookie = request.cookies.get("admin_auth");
   if (!authCookie || authCookie.value !== "authenticated") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const orders = await getOrders();
-  return NextResponse.json(orders);
+
+  const [orders] = await pool.query(`
+    SELECT 
+      id, 
+      order_id, 
+      items, 
+      total, 
+      customer_name, 
+      customer_phone, 
+      customer_address, 
+      note, 
+      status, 
+      created_at
+    FROM orders 
+    ORDER BY created_at DESC
+  `);
+
+  // items JSON string'ini parse et
+  const formattedOrders = orders.map(order => ({
+    ...order,
+    items: JSON.parse(order.items)
+  }));
+
+  return NextResponse.json(formattedOrders);
 }
 
+// POST - Yeni sipariş oluştur
 export async function POST(request) {
   const { items, total, customerName, customerPhone, customerAddress, note } = await request.json();
 
+  // Validasyonlar
   if (!customerName?.trim()) {
     return NextResponse.json({ error: "نام الزامی است" }, { status: 400 });
   }
@@ -40,32 +49,41 @@ export async function POST(request) {
     return NextResponse.json({ error: "آدرس کامل الزامی است" }, { status: 400 });
   }
 
-  const orders = await getOrders();
+  // Yeni order_id bul
+  const [[maxRow]] = await pool.query("SELECT MAX(order_id) as maxId FROM orders");
+  const newOrderId = (maxRow?.maxId || 0) + 1;
+
+  // Siparişi ekle
+  const [result] = await pool.query(
+    `INSERT INTO orders (order_id, items, total, customer_name, customer_phone, customer_address, note, status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [newOrderId, JSON.stringify(items), total, customerName, customerPhone, customerAddress, note || null, 'pending']
+  );
+
   const newOrder = {
-    id: Date.now(),
+    id: result.insertId,
+    order_id: newOrderId,
     items,
     total,
     customerName,
     customerPhone,
     customerAddress,
     note: note || null,
-    status: "pending",
-    createdAt: new Date().toISOString(),
+    status: 'pending',
+    created_at: new Date().toISOString()
   };
-  orders.push(newOrder);
-  await saveOrders(orders);
 
   // WebSocket bildirimi
   if (global.io) {
     global.io.emit("new-order", newOrder);
   }
 
-  // Bale bildirimi (İran içi)
+  // Bale bildirimi
   const BALE_BOT_TOKEN = process.env.BALE_BOT_TOKEN;
   const BALE_CHAT_ID = process.env.BALE_CHAT_ID;
 
   if (BALE_BOT_TOKEN && BALE_CHAT_ID) {
-    const message = `🆕 سفارش جدید!\n👤 نام: ${customerName}\n📞 تلفن: ${customerPhone}\n📍 آدرس: ${customerAddress}\n💰 مبلغ: ${total.toLocaleString()} تومان\n🆔 شماره پیگیری: ${newOrder.id}`;
+    const message = `🆕 سفارش جدید!\n👤 نام: ${customerName}\n📞 تلفن: ${customerPhone}\n📍 آدرس: ${customerAddress}\n💰 مبلغ: ${total.toLocaleString()} تومان\n🆔 شماره پیگیری: ${newOrderId}`;
     
     fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage`, {
       method: "POST",
@@ -74,20 +92,18 @@ export async function POST(request) {
     }).catch(err => console.error("Bale hatası:", err));
   }
 
-  return NextResponse.json({ success: true, orderId: newOrder.id });
+  return NextResponse.json({ success: true, orderId: newOrderId });
 }
 
+// PUT - Sipariş durumunu güncelle
 export async function PUT(request) {
   const authCookie = request.cookies.get("admin_auth");
   if (!authCookie || authCookie.value !== "authenticated") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   const { orderId, status } = await request.json();
-  const orders = await getOrders();
-  const order = orders.find((o) => o.id === orderId);
-  if (order) {
-    order.status = status;
-    await saveOrders(orders);
-  }
+  await pool.query("UPDATE orders SET status = ? WHERE order_id = ?", [status, orderId]);
+
   return NextResponse.json({ success: true });
 }

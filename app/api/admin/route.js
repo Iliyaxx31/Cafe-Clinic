@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
-import { writeFileSafe } from "@/app/lib/fileLock";  // SADECE BUNU EKLE
+import pool from "@/app/lib/db";
 
 export async function POST(request) {
   try {
@@ -12,137 +10,135 @@ export async function POST(request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const jsonDir = path.join(process.cwd(), "app/json");
-
+    // ----- GET DATA -----
     if (action === "getData") {
-      const dataFile = await fs.readFile(
-        path.join(jsonDir, "data.json"),
-        "utf-8",
-      );
-      const priceFile = await fs.readFile(
-        path.join(jsonDir, "price.json"),
-        "utf-8",
-      );
+      // Kategorileri ve ürünleri çek
+      const [categories] = await pool.query(`
+        SELECT 
+          c.id, 
+          c.name, 
+          c.icon,
+          JSON_ARRAYAGG(
+            JSON_OBJECT(
+              'id', i.id,
+              'name', i.name,
+              'description', i.description,
+              'img', i.img
+            )
+          ) as items
+        FROM categories c
+        LEFT JOIN items i ON c.id = i.category_id
+        GROUP BY c.id
+        ORDER BY c.id ASC
+      `);
+
+      // items içindeki null'ları temizle
+      const formattedCategories = categories.map(cat => ({
+        ...cat,
+        items: cat.items ? JSON.parse(cat.items).filter(item => item.id !== null) : []
+      }));
+
+      // Fiyatları çek
+      const [prices] = await pool.query("SELECT item_id, price FROM prices");
+      const pricesMap = {};
+      prices.forEach(p => pricesMap[p.item_id] = p.price);
+
       return NextResponse.json({
-        data: JSON.parse(dataFile),
-        prices: JSON.parse(priceFile),
+        data: { cafeName: "Cafe Clinic", categories: formattedCategories },
+        prices: pricesMap
       });
     }
 
+    // ----- UPDATE PRICES -----
     if (action === "updatePrices") {
-      // SADECE BURASI DEĞİŞTİ - writeFileSafe kullan
-      await writeFileSafe(path.join(jsonDir, "price.json"), data.prices);
+      const { prices } = data;
+      for (const [itemId, price] of Object.entries(prices)) {
+        await pool.query(
+          "INSERT INTO prices (item_id, price) VALUES (?, ?) ON DUPLICATE KEY UPDATE price = ?",
+          [parseInt(itemId), price, price]
+        );
+      }
       return NextResponse.json({ success: true });
     }
 
+    // ----- UPDATE DATA (kategoriler ve ürünler) -----
     if (action === "updateData") {
-      // SADECE BURASI DEĞİŞTİ - writeFileSafe kullan
-      await writeFileSafe(path.join(jsonDir, "data.json"), data.data);
+      const { data: newData } = data;
+      for (const cat of newData.categories) {
+        // Kategori ekle veya güncelle
+        await pool.query(
+          "INSERT INTO categories (id, name, icon) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, icon = ?",
+          [cat.id, cat.name, cat.icon || 'CiCoffeeCup', cat.name, cat.icon || 'CiCoffeeCup']
+        );
+        
+        // Kategoriye ait tüm ürünleri sil (yerine yenilerini ekle)
+        await pool.query("DELETE FROM items WHERE category_id = ?", [cat.id]);
+        
+        // Yeni ürünleri ekle
+        for (const item of cat.items) {
+          await pool.query(
+            "INSERT INTO items (id, category_id, name, description, img) VALUES (?, ?, ?, ?, ?)",
+            [item.id, cat.id, item.name, item.description || '', item.img || '/da.jpg']
+          );
+        }
+      }
       return NextResponse.json({ success: true });
     }
 
+    // ----- ADD ITEM -----
     if (action === "addItem") {
       const { categoryId, newItem } = data;
-      const currentData = JSON.parse(
-        await fs.readFile(path.join(jsonDir, "data.json"), "utf-8"),
+      const [[maxRow]] = await pool.query(
+        "SELECT MAX(id) as maxId FROM items WHERE category_id = ?",
+        [categoryId]
+      );
+      const newId = (maxRow?.maxId || 0) + 1;
+      newItem.id = newId;
+
+      await pool.query(
+        "INSERT INTO items (id, category_id, name, description, img) VALUES (?, ?, ?, ?, ?)",
+        [newId, categoryId, newItem.name, newItem.description || '', newItem.img || '/da.jpg']
       );
 
-      let maxId = 0;
-      currentData.categories.forEach((cat) => {
-        cat.items.forEach((item) => {
-          if (item.id > maxId) maxId = item.id;
-        });
-      });
-      newItem.id = maxId + 1;
-
-      const category = currentData.categories.find((c) => c.id === categoryId);
-      if (!category) {
-        return NextResponse.json(
-          { error: "Kategori bulunamadı" },
-          { status: 400 },
-        );
-      }
-
-      category.items.push(newItem);
-
-      // BURASI DEĞİŞTİ - writeFileSafe kullan
-      await writeFileSafe(path.join(jsonDir, "data.json"), currentData);
-
-      const prices = JSON.parse(
-        await fs.readFile(path.join(jsonDir, "price.json"), "utf-8"),
+      await pool.query(
+        "INSERT INTO prices (item_id, price) VALUES (?, ?)",
+        [newId, "0"]
       );
-      prices[newItem.id] = "0";
-      // BURASI DEĞİŞTİ - writeFileSafe kullan
-      await writeFileSafe(path.join(jsonDir, "price.json"), prices);
 
-      return NextResponse.json({ success: true, newId: newItem.id });
+      return NextResponse.json({ success: true, newId });
     }
 
+    // ----- UPDATE ITEM -----
     if (action === "updateItem") {
       const { categoryId, itemId, updatedItem } = data;
-      let currentData = JSON.parse(
-        await fs.readFile(path.join(jsonDir, "data.json"), "utf-8"),
+      await pool.query(
+        `UPDATE items SET 
+          name = COALESCE(?, name),
+          description = COALESCE(?, description),
+          img = COALESCE(?, img)
+        WHERE id = ? AND category_id = ?`,
+        [updatedItem.name, updatedItem.description, updatedItem.img, itemId, categoryId]
       );
-
-      const category = currentData.categories.find((c) => c.id === categoryId);
-      if (!category) {
-        return NextResponse.json(
-          { error: "Kategori bulunamadı" },
-          { status: 400 },
-        );
-      }
-
-      const itemIndex = category.items.findIndex((i) => i.id === itemId);
-      if (itemIndex === -1) {
-        return NextResponse.json({ error: "Ürün bulunamadı" }, { status: 400 });
-      }
-
-      category.items[itemIndex] = {
-        ...category.items[itemIndex],
-        ...updatedItem,
-      };
-
-      // BURASI DEĞİŞTİ - writeFileSafe kullan
-      await writeFileSafe(path.join(jsonDir, "data.json"), currentData);
       return NextResponse.json({ success: true });
     }
 
+    // ----- DELETE ITEM -----
     if (action === "deleteItem") {
       const { categoryId, itemId } = data;
-      const currentData = JSON.parse(
-        await fs.readFile(path.join(jsonDir, "data.json"), "utf-8"),
-      );
-
-      const category = currentData.categories.find((c) => c.id === categoryId);
-      category.items = category.items.filter((i) => i.id !== itemId);
-
-      // BURASI DEĞİŞTİ - writeFileSafe kullan
-      await writeFileSafe(path.join(jsonDir, "data.json"), currentData);
-
-      const prices = JSON.parse(
-        await fs.readFile(path.join(jsonDir, "price.json"), "utf-8"),
-      );
-      delete prices[itemId];
-      // BURASI DEĞİŞTİ - writeFileSafe kullan
-      await writeFileSafe(path.join(jsonDir, "price.json"), prices);
-
+      await pool.query("DELETE FROM items WHERE id = ? AND category_id = ?", [itemId, categoryId]);
+      await pool.query("DELETE FROM prices WHERE item_id = ?", [itemId]);
       return NextResponse.json({ success: true });
     }
 
+    // ----- ADD CATEGORY -----
     if (action === "addCategory") {
       const { newCategory } = data;
-      const currentData = JSON.parse(
-        await fs.readFile(path.join(jsonDir, "data.json"), "utf-8"),
+      const [[maxRow]] = await pool.query("SELECT MAX(id) as maxId FROM categories");
+      const newId = (maxRow?.maxId || 0) + 1;
+      await pool.query(
+        "INSERT INTO categories (id, name, icon) VALUES (?, ?, ?)",
+        [newId, newCategory.name, newCategory.icon || 'CiCoffeeCup']
       );
-
-      const maxCatId = Math.max(...currentData.categories.map((c) => c.id), 0);
-      newCategory.id = maxCatId + 1;
-      newCategory.items = [];
-
-      currentData.categories.push(newCategory);
-      // BURASI DEĞİŞTİ - writeFileSafe kullan
-      await writeFileSafe(path.join(jsonDir, "data.json"), currentData);
-
       return NextResponse.json({ success: true });
     }
 
