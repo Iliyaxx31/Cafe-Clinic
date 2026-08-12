@@ -221,7 +221,7 @@ export default function Home() {
 
       <button
         onClick={handleCartClick}
-        className="fixed bottom-5 left-5 bg-gradient-to-l to-gray-300 from-blue-400 backdrop-blur-md hover:bg-blue-700 text-white px-5 py-3 rounded-full shadow-lg z-50 transition-all duration-300 hover:scale-110 flex items-center gap-2"
+        className="fixed bottom-5 left-5 bg-rose-600/70 backdrop-blur-md hover:bg-blue-700 text-white px-5 py-3 rounded-full shadow-lg z-50 transition-all duration-300 hover:scale-110 flex items-center gap-2"
       >
         <BsCartFill size={22} />
         <span className="font-bold text-sm">سبد خرید</span>
