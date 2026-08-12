@@ -127,7 +127,7 @@ export default function TrackOrder() {
     </div>
     <div className="flex flex-col items-start">
       <span className="text-xs text-white">📞 تماس با کافه</span>
-      <span className="text-lg tracking-wider">۰۱۱۴۴۱۵۴۱۸۱</span>
+      <span className="text-lg tracking-wider">۰۱۱۴۴154182</span>
     </div>
     <span className="mr-auto text-white/50 text-sm">←</span>
   </a>
