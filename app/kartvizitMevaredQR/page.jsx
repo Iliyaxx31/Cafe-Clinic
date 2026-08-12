@@ -1,8 +1,8 @@
 "use client";
 
+import localFont from "next/font/local";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { El_Messiri } from "next/font/google";
 import {
   FaPhoneAlt,
   FaMapMarkerAlt,
@@ -12,26 +12,32 @@ import {
   FaCoffee,
 } from "react-icons/fa";
 
-const elMessiri = El_Messiri({
-  subsets: ["arabic"],
-  weight: ["600", "700"],
+const elMessiri = localFont({
+  src: [
+    {
+      path: "../fonts/ElMessiri-SemiBold.ttf", // page.jsx'e göre relative
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../fonts/ElMessiri-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   display: "swap",
 });
 
 const clinic = {
   name: "کلینیک تخصصی دندانپزشکی دکتر کرد",
   slogan: "همراه شما تا لبخندی دلنشین",
-
   phone: "01144154181",
   phoneHref: "tel:+981144154181",
-
   address: "F89X+PW9, Amol, İran",
   mapHref:
     "https://www.google.com/maps/search/?api=1&query=F89X%2BPW9+Amol+Iran",
-
   instagram: "@dr.kord_clinic",
   instagramHref: "https://instagram.com/dr.kord_clinic",
-
   cafe: "کافه ما",
   cafeSub: "cafe-clinic-amol.ir",
   cafeHref: "https://www.cafe-clinic-amol.ir/",
