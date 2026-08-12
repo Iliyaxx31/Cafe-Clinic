@@ -41,7 +41,7 @@ const Produc = ({ img, text, title, price, onQuantityChange, initialQuantity = 0
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
       </div>
 
-      <h1 className="mt-1 ml-3 lg:mb-1.5 font-bold text-slate-100/90 line-clamp-1 tracking-tight text-[clamp(1rem,4vw,1.8rem)]">
+      <h1 className="font-[family-name:var(--font-rubik)] font-medium mt-1 ml-3 lg:mb-1.5 text-slate-100/90 line-clamp-1 tracking-tight text-[clamp(1rem,4vw,1.8rem)]">
         {title}
       </h1>
 
@@ -59,7 +59,7 @@ const Produc = ({ img, text, title, price, onQuantityChange, initialQuantity = 0
       </div>
 
  <div className="flex items-center justify-between gap-2 ml-2 lg:py-3 md:py-3 md:px-0.5 mt-auto pt-1">
-  <span className="text-blue-300 font-bold tracking-wide text-[clamp(0.95rem,3.7vw,1.50rem)] whitespace-nowrap shrink-0">
+  <span className="font-[family-name:var(--font-rubik)] font-semibold text-blue-300 tracking-wide text-[clamp(0.95rem,3.7vw,1.50rem)] whitespace-nowrap shrink-0">
     {formattedPrice}
   </span>
 

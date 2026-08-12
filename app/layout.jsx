@@ -1,5 +1,20 @@
 import "./globals.css";
 import Script from "next/script";
+import { Vazirmatn, Rubik } from "next/font/google";
+
+const vazirmatn = Vazirmatn({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-vazirmatn",
+  display: "swap",
+});
+
+const rubik = Rubik({
+  subsets: ["arabic", "latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-rubik",
+  display: "swap",
+});
 
 export const viewport = {
   width: "device-width",
@@ -71,7 +86,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fa">
+    <html lang="fa" className={`${vazirmatn.variable} ${rubik.variable}`}>
       <head>
         <Script
           id="schema-markup"
@@ -98,7 +113,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body>{children}</body>
+      <body className={`${vazirmatn.className} antialiased`}>{children}</body>
     </html>
   );
 }
