@@ -119,43 +119,5 @@
     "note": "dadadad",
     "status": "completed",
     "createdAt": "2026-07-03T20:32:16.999Z"
-  },
-  {
-    "id": 1783111507559,
-    "items": [
-      {
-        "id": 2,
-        "name": "موکا",
-        "quantity": 1,
-        "price": 120,
-        "total": 120
-      }
-    ],
-    "total": 120,
-    "customerName": "dadawd",
-    "customerPhone": "09018992839",
-    "customerAddress": "dadwdaw",
-    "note": "dad",
-    "status": "completed",
-    "createdAt": "2026-07-03T20:45:07.559Z"
-  },
-  {
-    "id": 1783111764732,
-    "items": [
-      {
-        "id": 1,
-        "name": "اسپرسو",
-        "quantity": 1,
-        "price": 190,
-        "total": 190
-      }
-    ],
-    "total": 190,
-    "customerName": "dadadda",
-    "customerPhone": "09018992938",
-    "customerAddress": "dawdad",
-    "note": "mere bekisti",
-    "status": "completed",
-    "createdAt": "2026-07-03T20:49:24.732Z"
   }
 ]

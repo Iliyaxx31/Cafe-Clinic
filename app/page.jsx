@@ -257,7 +257,7 @@ export default function Home() {
 
       <footer className="bg-blue-300/50 border-t-4 rounded-lg border-gray-400/70">
         <Footer
-          number="شماره: ۰۹۰۱۷۸۳۱۲۹۸"
+          number="0شماره: 1144154182"
           store="ساعت کاری: از صبح ۸ تا شب ۱۲"
           adres="آدرس:. خیابان ۱۷ شهریور. کوچه بنیاد شهید . بن بست پامچال . ساختمان دکتر شهره . طبقه همکف"
         />

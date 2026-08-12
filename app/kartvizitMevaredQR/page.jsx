@@ -23,7 +23,7 @@ const clinic = {
   slogan: "همراه شما تا لبخندی دلنشین",
 
   phone: "01144154181",
-  phoneHref: "tel:+98",
+  phoneHref: "tel:+981144154181",
 
   address: "F89X+PW9, Amol, İran",
   mapHref:
