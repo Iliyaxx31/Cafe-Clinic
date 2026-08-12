@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { FaPhoneAlt } from "react-icons/fa";
 
 export default function TrackOrder() {
   const { id } = useParams();
@@ -23,7 +24,6 @@ export default function TrackOrder() {
 
   useEffect(() => {
     fetchOrder();
-    // Her 5 saniyede bir sipariş durumunu kontrol et
     const interval = setInterval(fetchOrder, 5000);
     return () => clearInterval(interval);
   }, [id]);
@@ -117,10 +117,21 @@ export default function TrackOrder() {
           </div>
         )}
 
-        <div className="mt-6 text-center text-xs text-gray-500">
-          <p>📞 برای اطلاعات بیشتر با کافه تماس بگیرید</p>
-          <p className="mt-1">۰۹۰۱۷۸۳۱۲۹۸</p>
-        </div>
+      <div className="mt-8">
+  <a
+    href="tel:+981144154181"
+    className="flex items-center justify-center gap-3 w-full  bg-gray-400 text-white font-bold py-2 px-3 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 group border border-white/20"
+  >
+    <div className="bg-white/20 p-2 rounded-full group-hover:scale-110 transition-transform">
+      <FaPhoneAlt size={20} className="text-white" />
+    </div>
+    <div className="flex flex-col items-start">
+      <span className="text-xs text-white">📞 تماس با کافه</span>
+      <span className="text-lg tracking-wider">۰۱۱۴۴۱۵۴۱۸۱</span>
+    </div>
+    <span className="mr-auto text-white/50 text-sm">←</span>
+  </a>
+</div>
 
         <div className="mt-4 text-center">
           <button

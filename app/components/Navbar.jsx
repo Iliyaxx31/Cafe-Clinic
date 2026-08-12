@@ -6,6 +6,8 @@ import { SiGitea } from "react-icons/si";
 import { FaHamburger, FaBreadSlice, FaPizzaSlice } from "react-icons/fa";
 import Kategori from "./Kategori";
 import { SiBuymeacoffee } from "react-icons/si";
+import { BiSolidBowlHot } from "react-icons/bi";
+
 
 // Varsayılan icon listesi (sırayla gider)
 const defaultIcons = [
@@ -24,7 +26,7 @@ const specialIcons = {
   تست: FaBreadSlice, // Tost
   پیتزا: FaPizzaSlice, // Pizza
   برگر: FaHamburger, // Burger
-
+ "نوشیدنی گرم":  BiSolidBowlHot ,
   "ملک شیک": TbMilkshake, // Milkshake (farklı)
 };
 

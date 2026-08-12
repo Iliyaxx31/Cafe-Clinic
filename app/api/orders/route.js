@@ -60,17 +60,35 @@ export async function POST(request) {
     global.io.emit("new-order", newOrder);
   }
 
-  // ================= BALE BİLDİRİMİ (3 KİŞİYE) =================
+  // ================= BALE BİLDİRİMİ (HER ŞEY DAHİL) =================
   const BALE_BOT_TOKEN = process.env.BALE_BOT_TOKEN;
 
   const chatIds = [
-    process.env.BALE_CHAT_ID,        // iliya (sen)
-    process.env.BALE_CHAT_MH_ID,     // mohammad
-    process.env.BALE_CHAT_ARIYAA_ID  // Ariyaa
+    process.env.BALE_CHAT_ID,
+    process.env.BALE_CHAT_MH_ID,
+    process.env.BALE_CHAT_ARIYAA_ID
   ].filter(id => id && id.trim() !== '');
 
   if (BALE_BOT_TOKEN && chatIds.length > 0) {
-    const message = `🆕 سفارش جدید!\n👤 نام: ${customerName}\n📞 تلفن: ${customerPhone}\n📍 آدرس: ${customerAddress}\n💰 مبلغ: ${total.toLocaleString()} تومان\n🆔 شماره پیگیری: ${newOrder.id}`;
+    const itemsList = items.map((item, index) => 
+      `   ${index + 1}️⃣ ${item.name} (${item.quantity} عدد) = ${(item.price * item.quantity).toLocaleString()} تومان`
+    ).join('\n');
+
+    const message = `
+🆕 سفارش جدید!
+
+👤 نام مشتری: ${customerName}
+📞 تلفن: ${customerPhone}
+📍 آدرس: ${customerAddress}
+📝 یادداشت: ${note || 'ندارد'}
+
+🛒 لیست سفارش:
+${itemsList}
+
+💰 مبلغ کل: ${total.toLocaleString()} تومان
+🆔 شماره پیگیری: ${newOrder.id}
+📅 تاریخ: ${new Date().toLocaleString('fa-IR')}
+    `;
 
     for (const chatId of chatIds) {
       fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage`, {
