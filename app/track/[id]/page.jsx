@@ -117,21 +117,24 @@ export default function TrackOrder() {
           </div>
         )}
 
-      <div className="mt-8">
-  <a
-    href="tel:+981144154181"
-    className="flex items-center justify-center gap-3 w-full  bg-gray-400 text-white font-bold py-2 px-3 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 group border border-white/20"
-  >
-    <div className="bg-white/20 p-2 rounded-full group-hover:scale-110 transition-transform">
-      <FaPhoneAlt size={20} className="text-white" />
-    </div>
-    <div className="flex flex-col items-start">
-      <span className="text-xs text-white">📞 تماس با کافه</span>
-      <span className="text-lg tracking-wider">۰۱۱۴۴154182</span>
-    </div>
-    <span className="mr-auto text-white/50 text-sm">←</span>
-  </a>
-</div>
+        {/* ✨ Telefon Butonu - Güzelleştirilmiş */}
+        <div className="mt-8">
+          <a
+            href="tel:+981144154182"
+            className="flex items-center justify-between gap-3 w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold py-3 px-5 rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group border border-white/20"
+          >
+            <div className="flex items-center gap-3">
+              <div className="bg-white/20 p-2.5 rounded-full group-hover:scale-110 transition-transform">
+                <FaPhoneAlt size={18} className="text-white" />
+              </div>
+              <div className="flex flex-col items-start">
+                <span className="text-xs text-white/80">تماس با کافه</span>
+                <span className="text-sm font-bold tracking-wide text-white mt-0.5">۰۱۱۴۴۱۵۴۱۸۲</span>
+              </div>
+            </div>
+            <span className="text-white/60 text-sm group-hover:translate-x-1 transition-transform">←</span>
+          </a>
+        </div>
 
         <div className="mt-4 text-center">
           <button

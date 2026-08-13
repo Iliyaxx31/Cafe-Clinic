@@ -6,17 +6,22 @@ import { MdAccessTime } from "react-icons/md";
 
 const Footer = ({ number, store, adres, logo }) => {
   return (
-    <footer className= " relative overflow-hidden bg-[#3b3e46]">
+    <footer className="relative overflow-hidden bg-[#3b3e46]">
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-20 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-5 py-4 flex items-center justify-between gap-4">
 
+        {/* Sol kısım - Logo ve isim */}
         <div className="flex items-center gap-3 shrink-0">
-          <div className="relative">
-            
-
-
+          <div className="relative " >
+            <Image
+              alt="Logo"
+              width={45}
+              height={45}
+              className="rounded-full object-cover border bg-blue-200 border-cyan-500/20"
+              src={logo || "/logo.png"}
+            />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
@@ -29,25 +34,31 @@ const Footer = ({ number, store, adres, logo }) => {
 
         <div className="hidden md:block w-px self-stretch bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
+        {/* Sağ kısım - Bilgiler */}
         <div className="flex flex-col gap-1.5 items-end">
+          {/* Saat */}
           <div className="flex items-center gap-2">
             <MdAccessTime className="text-cyan-400/70 text-xs shrink-0" />
             <span className="text-slate-400 font-bold text-xs">{store}</span>
           </div>
+          {/* Adres - icon yazıyla aynı hizada */}
           <div className="flex items-center gap-2">
             <IoLocationSharp className="text-cyan-400/70 text-xs shrink-0" />
-            <span className="text-slate-400 mt-1  text-[13px]">{adres}</span>
+            <span className="text-slate-400 text-[13px] text-right leading-relaxed max-w-[220px]">
+              {adres}
+            </span>
           </div>
+          {/* Telefon */}
           <div className="flex items-center gap-2">
-            <FaPhoneAlt className="text-cyan-300  text-[10px] shrink-0" />
-            <span className="text-cyan-300 text-xs mt-1 font-black">{number}</span>
+            <FaPhoneAlt className="text-cyan-300 text-[10px] shrink-0" />
+            <span className="text-cyan-300 text-xs font-black">{number}</span>
           </div>
         </div>
 
       </div>
 
       <div className="border-t border-white/5 py-2 text-center">
-        <p className="text-slate-600 text-[10px]  tracking-widest uppercase">
+        <p className="text-slate-600 text-[10px] tracking-widest uppercase">
           © Cafe Clinic &nbsp;·&nbsp; تمامی حقوق محفوظ است
         </p>
       </div>

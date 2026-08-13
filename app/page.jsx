@@ -259,9 +259,11 @@ export default function Home() {
 
       <footer className="bg-blue-300/50 border-t-4 rounded-lg border-gray-400/70">
         <Footer
-          number="شماره: ۰۹۰۱۷۸۳۱۲۹۸"
-          store="ساعت کاری: از صبح ۸ تا شب ۱۲"
-          adres="آدرس: خیابان آداکنت، کوچه آداکنت، بلوک ۱۸"
+          number="شماره:01144154182"
+          store="ساعت کاری: از صبح ۸ تا شب 8"
+          adres="آدرس: آمل کوچه بنیادشهید بن بست
+پامچال ساختمان دکتر شهره
+طبقه همکف"
         />
       </footer>
     </>
