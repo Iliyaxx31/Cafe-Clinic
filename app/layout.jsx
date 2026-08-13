@@ -1,18 +1,80 @@
 import "./globals.css";
 import Script from "next/script";
-import { Vazirmatn, Rubik } from "next/font/google";
+import localFont from "next/font/local";
 
-const vazirmatn = Vazirmatn({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "600", "700", "800"],
+const vazirmatn = localFont({
+  src: [
+    {
+      path: "./fonts/Vazirmatn-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Vazirmatn-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Vazirmatn-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Vazirmatn-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Vazirmatn-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+  ],
   variable: "--font-vazirmatn",
   display: "swap",
 });
 
-const rubik = Rubik({
-  subsets: ["arabic", "latin"],
-  weight: ["500", "600", "700"],
+const rubik = localFont({
+  src: [
+    {
+      path: "./fonts/Rubik-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Rubik-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Rubik-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-rubik",
+  display: "swap",
+});
+
+const elMessiri = localFont({
+  src: [
+    {
+      path: "./fonts/ElMessiri-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/ElMessiri-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/ElMessiri-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-el-messiri",
   display: "swap",
 });
 
@@ -86,7 +148,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fa" className={`${vazirmatn.variable} ${rubik.variable}`}>
+    <html lang="fa" dir="rtl" className={`${vazirmatn.variable} ${rubik.variable} ${elMessiri.variable}`}>
       <head>
         <Script
           id="schema-markup"
