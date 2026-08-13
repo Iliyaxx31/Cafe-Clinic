@@ -148,7 +148,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fa" dir="rtl" className={`${vazirmatn.variable} ${rubik.variable} ${elMessiri.variable}`}>
+    <html lang="fa" className={`${vazirmatn.variable} ${rubik.variable} ${elMessiri.variable}`}>
       <head>
         <Script
           id="schema-markup"
