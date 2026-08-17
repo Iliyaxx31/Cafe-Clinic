@@ -1,0 +1,507 @@
+{
+  "cafeName": "Cafe Clinic",
+  "categories": [
+    {
+      "id": 1,
+      "name": {
+        "tr": "Kahve",
+        "fa": "قهوه"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": {
+            "tr": "Espresso",
+            "fa": "اسپرسو"
+          },
+          "price": "100"
+        },
+        {
+          "id": 2,
+          "name": {
+            "tr": "Tekli Espresso",
+            "fa": "اسپرسو سینگل"
+          },
+          "price": "85"
+        },
+        {
+          "id": 3,
+          "name": {
+            "tr": "Arabica Espresso",
+            "fa": "اسپرسو عربیکا"
+          },
+          "price": "160"
+        },
+        {
+          "id": 4,
+          "name": {
+            "tr": "Tekli Arabica Espresso",
+            "fa": "اسپرسو سینگل عربیکا"
+          },
+          "price": "140"
+        },
+        {
+          "id": 5,
+          "name": {
+            "tr": "Karamel Machiato",
+            "fa": "کارامل ماکیاتو"
+          },
+          "price": "190"
+        },
+        {
+          "id": 6,
+          "name": {
+            "tr": "Americano",
+            "fa": "آمریکانو"
+          },
+          "price": "130"
+        },
+        {
+          "id": 7,
+          "name": {
+            "tr": "Latte",
+            "fa": "لاته"
+          },
+          "price": "170"
+        },
+        {
+          "id": 27,
+          "name": {
+            "tr": "Klasik Cappuccino",
+            "fa": "کاپوچینو کلاسیک"
+          },
+          "price": "180"
+        },
+        {
+          "id": 28,
+          "name": {
+            "tr": "Mocha",
+            "fa": "موکا"
+          },
+          "price": "195"
+        },
+        {
+          "id": 29,
+          "name": {
+            "tr": "Cortado",
+            "fa": "کورتادو"
+          },
+          "price": "150"
+        },
+        {
+          "id": 32,
+          "name": {
+            "tr": "Fındıklı Mocha",
+            "fa": "موکای فندقی"
+          },
+          "price": "200"
+        },
+        {
+          "id": 46,
+          "name": {
+            "tr": "İspanyol Latte",
+            "fa": "سپانیش لاته"
+          },
+          "price": "200"
+        },
+        {
+          "id": 57,
+          "name": {
+            "tr": "Long Black",
+            "fa": "لانگ بلک"
+          },
+          "price": "130"
+        },
+        {
+          "id": 59,
+          "name": {
+            "tr": "Flat White",
+            "fa": "فلت وایت"
+          },
+          "price": "170"
+        },
+        {
+          "id": 62,
+          "name": {
+            "tr": "Espresso Machiato",
+            "fa": "اسپرسو ماکیاتو"
+          },
+          "price": "130"
+        },
+        {
+          "id": 64,
+          "name": {
+            "tr": "Arabica Cortado",
+            "fa": "کورتادو عربیکا"
+          },
+          "price": "210"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": {
+        "tr": "Soğuk Kahve",
+        "fa": "قهوه سرد"
+      },
+      "items": [
+        {
+          "id": 8,
+          "name": {
+            "tr": "Buzlu Americano",
+            "fa": "آیس آمریکانو"
+          },
+          "price": "140"
+        },
+        {
+          "id": 9,
+          "name": {
+            "tr": "Buzlu Mocha",
+            "fa": "آیس موکا"
+          },
+          "price": "210"
+        },
+        {
+          "id": 10,
+          "name": {
+            "tr": "Buzlu Latte",
+            "fa": "آیس لاته"
+          },
+          "price": "180"
+        },
+        {
+          "id": 11,
+          "name": {
+            "tr": "Ballı Latte",
+            "fa": "هانی لاته"
+          },
+          "price": "190"
+        },
+        {
+          "id": 53,
+          "name": {
+            "tr": "Buzlu Cappuccino",
+            "fa": "آيس كايوچینو"
+          },
+          "price": "180"
+        },
+        {
+          "id": 54,
+          "name": {
+            "tr": "Buzlu Karamel Machiato",
+            "fa": "آيس كارامل ماكياتو"
+          },
+          "price": "210"
+        },
+        {
+          "id": 58,
+          "name": {
+            "tr": "Buzlu Long Black",
+            "fa": "آیس لانگ بلک"
+          },
+          "price": "140"
+        },
+        {
+          "id": 63,
+          "name": {
+            "tr": "Affogato",
+            "fa": "آفوگاتو"
+          },
+          "price": "210"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": {
+        "tr": "Shake",
+        "fa": "شیک"
+      },
+      "items": [
+        {
+          "id": 12,
+          "name": {
+            "tr": "Oreo Shake",
+            "fa": "شیک اوریو"
+          },
+          "price": "250"
+        },
+        {
+          "id": 14,
+          "name": {
+            "tr": "Espresso Shake",
+            "fa": "شیک اسپرسو"
+          },
+          "price": "240"
+        },
+        {
+          "id": 15,
+          "name": {
+            "tr": "Vanilyalı Shake",
+            "fa": "شیک وانیلی"
+          },
+          "price": "190"
+        },
+        {
+          "id": 34,
+          "name": {
+            "tr": "Arabica Espresso Shake",
+            "fa": "شیک اسپرسو عربیکا"
+          },
+          "price": "270"
+        },
+        {
+          "id": 36,
+          "name": {
+            "tr": "Nutellalı Shake",
+            "fa": "شیکن نوتلا"
+          },
+          "price": "280"
+        },
+        {
+          "id": 37,
+          "name": {
+            "tr": "Mader Bisküvili Shake",
+            "fa": "شیک بیسکوئیت مادر"
+          },
+          "price": "240"
+        },
+        {
+          "id": 38,
+          "name": {
+            "tr": "Fıstık Ezmeli Shake",
+            "fa": "شیک کره بادام‌زمینی"
+          },
+          "price": "310"
+        },
+        {
+          "id": 50,
+          "name": {
+            "tr": "Nescafe Shake",
+            "fa": "شیک نسکافه"
+          },
+          "price": "250"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": {
+        "tr": "Çay ve Bitki Çayı",
+        "fa": "چای و دمنوش"
+      },
+      "items": [
+        {
+          "id": 16,
+          "name": {
+            "tr": "Masala Çayı",
+            "fa": "چای ماسالا"
+          },
+          "price": "170"
+        },
+        {
+          "id": 17,
+          "name": {
+            "tr": "Karak Çayı",
+            "fa": "چای کاراک"
+          },
+          "price": "180"
+        },
+        {
+          "id": 18,
+          "name": {
+            "tr": "Çay",
+            "fa": "چای"
+          },
+          "price": "75.000"
+        },
+        {
+          "id": 40,
+          "name": {
+            "tr": "Mavi Okyanus Bitki Çayı",
+            "fa": "دم‌نوش اوغیانوس آبی"
+          },
+          "price": "160"
+        },
+        {
+          "id": 41,
+          "name": {
+            "tr": "Sakinleştirici Bitki Çayı",
+            "fa": "دمنوش آرام بخش"
+          },
+          "price": "170"
+        },
+        {
+          "id": 42,
+          "name": {
+            "tr": "Şiraz Bitki Çayı",
+            "fa": "دم‌نوش شیراز"
+          },
+          "price": "150"
+        },
+        {
+          "id": 55,
+          "name": {
+            "tr": "Mix Berry Bitki Çayı",
+            "fa": "دمنوش ميكس بری"
+          },
+          "price": "160"
+        },
+        {
+          "id": 56,
+          "name": {
+            "tr": "Prag Bitki Çayı",
+            "fa": "دمنوش پراگ"
+          },
+          "price": "160"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": {
+        "tr": "Soğuk İçecekler",
+        "fa": "نوشیدنی‌ سرد"
+      },
+      "items": [
+        {
+          "id": 19,
+          "name": {
+            "tr": "Limonata",
+            "fa": "لیموناد"
+          },
+          "price": "165"
+        },
+        {
+          "id": 20,
+          "name": {
+            "tr": "Mojito",
+            "fa": "موهیتو"
+          },
+          "price": "170"
+        },
+        {
+          "id": 21,
+          "name": {
+            "tr": "Barista Özel",
+            "fa": "باریستا اسپشال"
+          },
+          "price": "135"
+        },
+        {
+          "id": 22,
+          "name": {
+            "tr": "Nar Mocktaili",
+            "fa": "ماکتیل انار"
+          },
+          "price": "175"
+        },
+        {
+          "id": 23,
+          "name": {
+            "tr": "Günün Şerbeti",
+            "fa": "شربت روز"
+          },
+          "price": "150"
+        },
+        {
+          "id": 24,
+          "name": {
+            "tr": "Safran Şerbeti",
+            "fa": "شربت زعفران"
+          },
+          "price": "140"
+        },
+        {
+          "id": 43,
+          "name": {
+            "tr": "Limon Cherry",
+            "fa": "لمون چرى"
+          },
+          "price": "140"
+        },
+        {
+          "id": 44,
+          "name": {
+            "tr": "Buzlu Şeftali Çayı",
+            "fa": "آيس تيى هلو"
+          },
+          "price": "120"
+        },
+        {
+          "id": 45,
+          "name": {
+            "tr": "Muzlu Süt",
+            "fa": "شير موز"
+          },
+          "price": "190"
+        },
+        {
+          "id": 60,
+          "name": {
+            "tr": "Buzlu Çikolata",
+            "fa": "آیس شکلات"
+          },
+          "price": "170"
+        },
+        {
+          "id": 61,
+          "name": {
+            "tr": "Buzlu Beyaz (Ice White)",
+            "fa": "آیس وایت"
+          },
+          "price": "165"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": {
+        "tr": "Sıcak İçecekler",
+        "fa": "نوشیدنی گرم"
+      },
+      "items": [
+        {
+          "id": 47,
+          "name": {
+            "tr": "Sıcak Süt",
+            "fa": "شیر گرم"
+          },
+          "price": "90"
+        },
+        {
+          "id": 48,
+          "name": {
+            "tr": "Beyaz Çikolata",
+            "fa": "وایت چاکلت"
+          },
+          "price": "155"
+        },
+        {
+          "id": 49,
+          "name": {
+            "tr": "Ballı Tarçınlı Süt",
+            "fa": "شیر عسل دارچین"
+          },
+          "price": "140"
+        },
+        {
+          "id": 51,
+          "name": {
+            "tr": "Sıcak Çikolata",
+            "fa": "هات چاکلت"
+          },
+          "price": "10"
+        },
+        {
+          "id": 52,
+          "name": {
+            "tr": "Toz Cappuccino",
+            "fa": "کاپوچینو پودری"
+          },
+          "price": "160"
+        }
+      ]
+    }
+  ]
+}
