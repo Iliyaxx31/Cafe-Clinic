@@ -46,6 +46,27 @@ export function middleware(request) {
     }
   }
 
+  // ------------------------------------------------------------------
+  // /staff koruması — barista/personel sipariş panosu, giriş yapmadan
+  // görülemez. Aynı /admin mantığı: login sayfası ve login API'si
+  // serbest, geri kalan her /staff isteği cookie kontrolünden geçer.
+  // ------------------------------------------------------------------
+  if (pathname.startsWith("/staff")) {
+    if (pathname === "/staff/login") {
+      return NextResponse.next();
+    }
+
+    if (pathname === "/api/staff/login") {
+      return NextResponse.next();
+    }
+
+    const staffAuth = request.cookies.get("staff_auth");
+
+    if (!staffAuth || staffAuth.value !== "authenticated") {
+      return NextResponse.redirect(new URL("/staff/login", request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 

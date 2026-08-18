@@ -48,8 +48,22 @@ export default function StaffMenuPage() {
   const [lang, setLang] = useState("tr");
   const [activeCat, setActiveCat] = useState("all");
   const [cart, setCart] = useState({}); // { itemId: quantity }
+  const [secretClicks, setSecretClicks] = useState(0);
+  const [discoMode, setDiscoMode] = useState(false);
   const isRtl = lang === "fa";
   const t = LABELS[lang];
+
+  const handleSecretTap = () => {
+    setSecretClicks((n) => {
+      const next = n + 1;
+      if (next >= 5) {
+        setDiscoMode(true);
+        setTimeout(() => setDiscoMode(false), 4000);
+        return 0;
+      }
+      return next;
+    });
+  };
 
   const visibleCategories =
     activeCat === "all"
@@ -96,45 +110,68 @@ export default function StaffMenuPage() {
   return (
     <div
       dir={isRtl ? "rtl" : "ltr"}
-      className="min-h-screen bg-slate-950 text-slate-100 pb-10"
+      className={
+        "relative min-h-screen bg-[#0b0014] text-pink-50 pb-10 overflow-x-hidden " +
+        (discoMode ? "animate-disco" : "")
+      }
     >
+      {/* Arkaplanda yavaşça dolaşan bulanık neon lekeler */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-pink-600/25 blur-3xl animate-blob-a" />
+        <div className="absolute top-1/3 -right-24 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl animate-blob-b" />
+        <div className="absolute bottom-0 left-1/4 h-64 w-64 rounded-full bg-lime-400/10 blur-3xl animate-blob-c" />
+      </div>
+
+      {/* جانه من — köşede saklı, zeminle neredeyse aynı renkte, arayanın bulacağı boyutta */}
+      <span
+        className="pointer-events-none fixed bottom-1 left-1 z-50 select-none text-[8px] font-bold text-[#2f1452]"
+        aria-hidden="true"
+      >
+        جانه من
+      </span>
+
       {/* Header */}
-      <div className="max-w-2xl mx-auto flex items-center justify-between gap-4 px-5 pt-7 pb-4 border-b border-slate-800">
+      <div className="relative max-w-2xl mx-auto flex items-center justify-between gap-4 px-5 pt-7 pb-4 border-b border-pink-500/25">
         <div>
-          <h1 className="text-2xl font-bold uppercase tracking-wide text-slate-100">
+          <h1
+            onClick={handleSecretTap}
+            className="cursor-default text-2xl font-black uppercase tracking-wide text-pink-300 animate-neon-flicker"
+          >
             {data.cafeName}
           </h1>
-          <p className="mt-1 text-xs font-semibold  uppercase tracking-wide text-sky-400">
+          <p className="mt-1 text-xs font-bold uppercase tracking-widest text-lime-300">
             {t.sub}
           </p>
         </div>
         <button
           onClick={() => setLang(lang === "tr" ? "fa" : "tr")}
-          className="shrink-0 rounded-lg border border-slate-600 px-4 py-2.5 text-sm font-semibold text-sky-300 transition-colors hover:bg-sky-400 hover:text-slate-900 hover:border-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-400 focus-visible:outline-offset-2"
+          className="shrink-0 rounded-lg border border-pink-400 px-4 py-2.5 text-sm font-bold text-pink-300 transition-all hover:bg-pink-500 hover:text-[#0b0014] hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-pink-400 focus-visible:outline-offset-2"
         >
-          جانه من
           {t.lang}
         </button>
       </div>
 
       {/* Sabit üst blok: toplam + kategori sekmeleri — kaydırırken hep ekranda kalır */}
-      <div className="sticky top-0 z-20 bg-slate-950/95 backdrop-blur border-b border-slate-800">
+      <div className="sticky top-0 z-20 bg-[#0b0014]/95 backdrop-blur border-b border-pink-500/25">
         <div className="max-w-2xl mx-auto px-5 pt-3 pb-1">
           {totalCount === 0 ? (
-            <p className="text-sm text-slate-500 py-2">{t.empty}</p>
+            <p className="text-sm text-pink-200/40 py-2">{t.empty}</p>
           ) : (
-            <div className="flex items-center justify-between gap-4 rounded-xl border border-sky-400/40 bg-sky-400/10 px-4 py-2.5">
+            <div className="flex items-center justify-between gap-4 rounded-xl border border-pink-400/60 bg-pink-500/10 px-4 py-2.5 animate-pop-in">
               <div>
-                <p className="text-[11px] uppercase tracking-wide text-sky-300/80">
+                <p className="text-[11px] uppercase tracking-wide text-lime-300">
                   {totalCount} {t.items} · {t.total}
                 </p>
-                <p className="text-2xl font-extrabold tabular-nums text-sky-300 leading-tight">
+                <p
+                  key={totalPrice}
+                  className="text-2xl font-black tabular-nums text-pink-300 leading-tight animate-price-bump [text-shadow:0_0_16px_rgba(244,114,182,0.6)]"
+                >
                   {totalPrice.toLocaleString("tr-TR")} {CURRENCY}
                 </p>
               </div>
               <button
                 onClick={clearCart}
-                className="shrink-0 rounded-lg border border-sky-400/60 px-3 py-2 text-sm font-semibold text-sky-300 transition-colors hover:bg-sky-400 hover:text-slate-900"
+                className="shrink-0 rounded-lg border border-pink-400/70 px-3 py-2 text-sm font-bold text-pink-300 transition-all hover:bg-pink-500 hover:text-[#0b0014] hover:rotate-3"
               >
                 {t.clear}
               </button>
@@ -146,10 +183,10 @@ export default function StaffMenuPage() {
           <button
             onClick={() => setActiveCat("all")}
             className={
-              "shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors " +
+              "shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold transition-all hover:-translate-y-0.5 " +
               (activeCat === "all"
-                ? "border-sky-400 bg-sky-400 text-slate-900"
-                : "border-slate-700 bg-slate-800/70 text-slate-400 hover:border-slate-500 hover:text-slate-100")
+                ? "border-pink-400 bg-pink-500 text-[#0b0014]"
+                : "border-pink-500/25 bg-[#1a0a2c] text-pink-200/60 hover:border-pink-400/60 hover:text-pink-100")
             }
           >
             {t.all}
@@ -159,10 +196,10 @@ export default function StaffMenuPage() {
               key={cat.id}
               onClick={() => setActiveCat(cat.id)}
               className={
-                "shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors " +
+                "shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold transition-all hover:-translate-y-0.5 " +
                 (activeCat === cat.id
-                  ? "border-sky-400 bg-sky-400 text-slate-900"
-                  : "border-slate-700 bg-slate-800/70 text-slate-400 hover:border-slate-500 hover:text-slate-100")
+                  ? "border-pink-400 bg-pink-500 text-[#0b0014]"
+                  : "border-pink-500/25 bg-[#1a0a2c] text-pink-200/60 hover:border-pink-400/60 hover:text-pink-100")
               }
             >
               {cat.name[lang] || cat.name.fa || cat.name.tr}
@@ -172,15 +209,15 @@ export default function StaffMenuPage() {
       </div>
 
       {/* İçerik */}
-      <main className="max-w-2xl mx-auto px-5">
+      <main className="relative max-w-2xl mx-auto px-5">
         {visibleCategories.map((cat) => {
           const catName = cat.name[lang] || cat.name.fa || cat.name.tr;
           return (
             <section
               key={cat.id}
-              className="mt-4 rounded-2xl border border-slate-700/60 bg-slate-800/60 backdrop-blur-sm px-4 pb-2 pt-1"
+              className="mt-4 rounded-2xl border border-pink-500/25 bg-[#170a28] px-4 pb-2 pt-1"
             >
-              <h2 className="mt-4 mb-1.5 text-base font-semibold uppercase tracking-wide text-sky-300">
+              <h2 className="mt-4 mb-1.5 text-base font-black uppercase tracking-widest text-lime-300">
                 {catName}
               </h2>
               <ul className="list-none m-0 p-0">
@@ -199,38 +236,41 @@ export default function StaffMenuPage() {
                         disabled={isEmpty}
                         onClick={() => addOne(item)}
                         className={
-                          "w-full flex items-center gap-2.5 border-b border-slate-700/60 py-3.5 text-lg last:border-b-0 sm:text-xl transition-colors " +
+                          "w-full flex items-center gap-2.5 border-b border-pink-500/15 py-3.5 text-lg last:border-b-0 sm:text-xl transition-all duration-150 " +
                           (isRtl ? "text-right " : "text-left ") +
                           (isEmpty
-                            ? "opacity-40 cursor-not-allowed"
-                            : "active:bg-slate-700/40 " +
-                              (selected ? "bg-slate-700/30" : ""))
+                            ? "opacity-30 cursor-not-allowed"
+                            : "active:scale-[0.98] active:bg-pink-500/10 " +
+                              (selected
+                                ? "bg-pink-500/10 border-l-2 border-l-pink-400"
+                                : ""))
                         }
                       >
                         {/* Miktar rozeti */}
                         <span
+                          key={qty}
                           className={
-                            "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors " +
+                            "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-black transition-colors " +
                             (selected
-                              ? "bg-slate-100 text-slate-900"
+                              ? "bg-lime-300 text-[#0b0014] animate-pop-in"
                               : "bg-transparent text-transparent")
                           }
                         >
                           {qty > 0 ? qty : ""}
                         </span>
 
-                        <span className="font-semibold flex-1 truncate text-slate-100">
+                        <span className="font-bold flex-1 truncate text-pink-50">
                           {itemName}
                         </span>
 
-                        <span className="min-w-[14px] flex-1 border-b-2 border-dotted border-slate-700" />
+                        <span className="min-w-[14px] flex-1 border-b-2 border-dotted border-pink-500/20" />
 
                         <span
                           className={
-                            "whitespace-nowrap font-bold tabular-nums " +
+                            "whitespace-nowrap font-black tabular-nums " +
                             (isEmpty
-                              ? "text-slate-500 font-medium"
-                              : "text-sky-300")
+                              ? "text-pink-200/30 font-medium"
+                              : "text-pink-300")
                           }
                         >
                           {isEmpty ? displayPrice : `${displayPrice} ${CURRENCY}`}
@@ -242,7 +282,7 @@ export default function StaffMenuPage() {
                             role="button"
                             tabIndex={0}
                             onClick={(e) => removeOne(item.id, e)}
-                            className="ml-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-slate-500 text-sky-300 text-lg font-bold hover:bg-slate-700"
+                            className="ml-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-pink-400/70 text-pink-300 text-lg font-black transition-transform hover:bg-pink-500/20 hover:scale-110 active:scale-90"
                           >
                             −
                           </span>
@@ -256,6 +296,114 @@ export default function StaffMenuPage() {
           );
         })}
       </main>
+
+      <style jsx global>{`
+        @keyframes blob-a {
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(40px, 60px) scale(1.15);
+          }
+        }
+        @keyframes blob-b {
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(-50px, 30px) scale(1.2);
+          }
+        }
+        @keyframes blob-c {
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(30px, -40px) scale(0.9);
+          }
+        }
+        @keyframes wiggle {
+          0%,
+          100% {
+            transform: rotate(-8deg) scale(1);
+          }
+          50% {
+            transform: rotate(4deg) scale(1.08);
+          }
+        }
+        @keyframes neon-flicker {
+          0%,
+          19%,
+          21%,
+          23%,
+          54%,
+          56%,
+          100% {
+            text-shadow: 0 0 6px rgba(244, 114, 182, 0.9),
+              0 0 18px rgba(244, 114, 182, 0.6), 0 0 32px rgba(244, 114, 182, 0.4);
+            opacity: 1;
+          }
+          20%,
+          22%,
+          55% {
+            text-shadow: none;
+            opacity: 0.6;
+          }
+        }
+        @keyframes pop-in {
+          0% {
+            transform: scale(0.6);
+            opacity: 0;
+          }
+          60% {
+            transform: scale(1.08);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+        @keyframes price-bump {
+          0% {
+            transform: scale(1.25);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+        .animate-blob-a {
+          animation: blob-a 9s ease-in-out infinite;
+        }
+        .animate-blob-b {
+          animation: blob-b 11s ease-in-out infinite;
+        }
+        .animate-blob-c {
+          animation: blob-c 8s ease-in-out infinite;
+        }
+        @keyframes disco {
+          0% {
+            filter: hue-rotate(0deg) saturate(1.6);
+          }
+          100% {
+            filter: hue-rotate(360deg) saturate(1.6);
+          }
+        }
+        .animate-disco {
+          animation: disco 0.6s linear infinite;
+        }
+        .animate-neon-flicker {
+          animation: neon-flicker 4s linear infinite;
+        }
+        .animate-pop-in {
+          animation: pop-in 0.35s ease-out;
+        }
+        .animate-price-bump {
+          animation: price-bump 0.25s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
