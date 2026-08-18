@@ -396,6 +396,36 @@
           "id": 52
         }
       ]
+    },
+    {
+      "name": "کیک و کوکی",
+      "id": 7,
+      "items": [
+        {
+          "name": "کوکی شکلاتی",
+          "description": "",
+          "img": "/da.jpg",
+          "id": 69
+        },
+        {
+          "name": "کوکی رژیمی",
+          "description": "کوکی رژیمی، کم‌کالری و مناسب ",
+          "img": "/da.jpg",
+          "id": 70
+        },
+        {
+          "name": "وایت کوکی",
+          "description": "",
+          "img": "/da.jpg",
+          "id": 71
+        },
+        {
+          "name": "کیک خانگی",
+          "description": "",
+          "img": "/da.jpg",
+          "id": 72
+        }
+      ]
     }
   ]
 }
