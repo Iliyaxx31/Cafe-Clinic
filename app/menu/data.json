@@ -22,7 +22,7 @@
             "tr": "Tekli Espresso",
             "fa": "اسپرسو سینگل"
           },
-          "price": "85"
+          "price": "85.000"
         },
         {
           "id": 3,
@@ -30,7 +30,7 @@
             "tr": "Arabica Espresso",
             "fa": "اسپرسو عربیکا"
           },
-          "price": "160"
+          "price": "160.000"
         },
         {
           "id": 4,
@@ -38,55 +38,55 @@
             "tr": "Tekli Arabica Espresso",
             "fa": "اسپرسو سینگل عربیکا"
           },
-          "price": "140"
+          "price": "140.000"
         },
         {
           "id": 5,
           "name": {
-            "tr": "Karamel Machiato",
-            "fa": "کارامل ماکیاتو"
-          },
-          "price": "190"
-        },
-        {
-          "id": 6,
-          "name": {
-            "tr": "Americano",
-            "fa": "آمریکانو"
+            "tr": "Robusta Americano",
+            "fa": "آمریکانو روبوستا"
           },
           "price": "130"
         },
         {
+          "id": 6,
+          "name": {
+            "tr": "Arabica Americano",
+            "fa": "آمریکانو عربیکا"
+          },
+          "price": "170"
+        },
+        {
           "id": 7,
           "name": {
-            "tr": "Latte",
-            "fa": "لاته"
+            "tr": "Robusta Latte",
+            "fa": "لاته روبوستا"
           },
           "price": "170"
         },
         {
           "id": 27,
           "name": {
-            "tr": "Klasik Cappuccino",
-            "fa": "کاپوچینو کلاسیک"
+            "tr": "Arabica Latte",
+            "fa": "لاته عربیکا"
           },
-          "price": "180"
+          "price": "210"
         },
         {
           "id": 28,
           "name": {
-            "tr": "Mocha",
-            "fa": "موکا"
+            "tr": "Robusta Cortado",
+            "fa": "کورتادو روبوستا"
           },
-          "price": "195"
+          "price": "150"
         },
         {
           "id": 29,
           "name": {
-            "tr": "Cortado",
-            "fa": "کورتادو"
+            "tr": "Arabica Cortado",
+            "fa": "کورتادو عربیکا"
           },
-          "price": "150"
+          "price": "190"
         },
         {
           "id": 32,
@@ -94,23 +94,23 @@
             "tr": "Fındıklı Mocha",
             "fa": "موکای فندقی"
           },
-          "price": "200"
+          "price": "200.000"
         },
         {
           "id": 46,
           "name": {
-            "tr": "İspanyol Latte",
-            "fa": "سپانیش لاته"
+            "tr": "Mocha",
+            "fa": "موکا"
           },
-          "price": "200"
+          "price": "195.000"
         },
         {
           "id": 57,
           "name": {
-            "tr": "Long Black",
-            "fa": "لانگ بلک"
+            "tr": "Karamel Machiato",
+            "fa": "کارامل ماکیاتو"
           },
-          "price": "130"
+          "price": "190.000"
         },
         {
           "id": 59,
@@ -131,10 +131,34 @@
         {
           "id": 64,
           "name": {
-            "tr": "Arabica Cortado",
-            "fa": "کورتادو عربیکا"
+            "tr": "Klasik Cappuccino",
+            "fa": "کاپوچینو کلاسیک"
           },
-          "price": "210"
+          "price": "180.000"
+        },
+        {
+          "id": 65,
+          "name": {
+            "tr": "İspanyol Latte",
+            "fa": "اسپانیش لاته"
+          },
+          "price": "200.000"
+        },
+        {
+          "id": 66,
+          "name": {
+            "tr": "Long Black",
+            "fa": "لانگ بلک"
+          },
+          "price": "130"
+        },
+        {
+          "id": 67,
+          "name": {
+            "tr": "Arabica Espresso Machiato",
+            "fa": "اسپرسو ماکیاتو عربیکا"
+          },
+          "price": "0"
         }
       ]
     },
@@ -383,10 +407,10 @@
         {
           "id": 21,
           "name": {
-            "tr": "Barista Özel",
-            "fa": "باریستا اسپشال"
+            "tr": "Ananas Mocktaili",
+            "fa": "ماکتیل آناناس"
           },
-          "price": "135"
+          "price": "0"
         },
         {
           "id": 22,
@@ -394,15 +418,15 @@
             "tr": "Nar Mocktaili",
             "fa": "ماکتیل انار"
           },
-          "price": "175"
+          "price": "175.000"
         },
         {
           "id": 23,
           "name": {
-            "tr": "Günün Şerbeti",
-            "fa": "شربت روز"
+            "tr": "Gül Şerbeti",
+            "fa": "شربت رز"
           },
-          "price": "150"
+          "price": "150.000"
         },
         {
           "id": 24,
@@ -423,10 +447,10 @@
         {
           "id": 44,
           "name": {
-            "tr": "Buzlu Şeftali Çayı",
-            "fa": "آيس تيى هلو"
+            "tr": "Barista Özel",
+            "fa": "باریستا اسپشال"
           },
-          "price": "120"
+          "price": "135.000"
         },
         {
           "id": 45,
@@ -440,7 +464,7 @@
           "id": 60,
           "name": {
             "tr": "Buzlu Çikolata",
-            "fa": "آیس شکلات"
+            "fa": "آیس چاکلت"
           },
           "price": "170"
         },
@@ -451,6 +475,14 @@
             "fa": "آیس وایت"
           },
           "price": "165"
+        },
+        {
+          "id": 68,
+          "name": {
+            "tr": "Buzlu Şeftali Çayı",
+            "fa": "آيس تيى هلو"
+          },
+          "price": "120"
         }
       ]
     },

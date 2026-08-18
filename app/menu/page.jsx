@@ -104,7 +104,7 @@ export default function StaffMenuPage() {
           <h1 className="text-2xl font-bold uppercase tracking-wide text-slate-100">
             {data.cafeName}
           </h1>
-          <p className="mt-1 text-xs font-semibold p-2 uppercase tracking-wide text-sky-400">
+          <p className="mt-1 text-xs font-semibold  uppercase tracking-wide text-sky-400">
             {t.sub}
           </p>
         </div>
@@ -112,6 +112,7 @@ export default function StaffMenuPage() {
           onClick={() => setLang(lang === "tr" ? "fa" : "tr")}
           className="shrink-0 rounded-lg border border-slate-600 px-4 py-2.5 text-sm font-semibold text-sky-300 transition-colors hover:bg-sky-400 hover:text-slate-900 hover:border-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-400 focus-visible:outline-offset-2"
         >
+          جانه من
           {t.lang}
         </button>
       </div>
