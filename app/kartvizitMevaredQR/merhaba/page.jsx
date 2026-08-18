@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { El_Messiri } from "next/font/google";
+import localFont from "next/font/local";
 import {
   FaUserMd,
   FaSyringe,
@@ -18,15 +18,24 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-const elMessiri = El_Messiri({
-  subsets: ["arabic"],
-  weight: ["600", "700"],
+// ✅ app/fonts/ klasöründen yükleniyor
+const elMessiri = localFont({
+  src: [
+    {
+      path: "../../fonts/ElMessiri-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../fonts/ElMessiri-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   display: "swap",
 });
 
-// Her hizmete "desc" (1-2 cümlelik açıklama) ekledim.
-// İstersen "image" alanı da ekleyip gerçek bir fotoğraf koyabilirsin, örn:
-// { title: "...", icon: <FaTooth />, desc: "...", image: "/services/implant.jpg" }
+// Hizmetler listesi
 const services = [
   {
     title: "دندانپزشکی تحت بیهوشی بزرگسالان",
@@ -80,6 +89,7 @@ const services = [
   },
 ];
 
+// Baloncuk bileşeni
 function ServiceBubble({ service, onClose }) {
   if (!service) return null;
 
@@ -88,16 +98,13 @@ function ServiceBubble({ service, onClose }) {
       className="fixed inset-0 z-50 flex items-center justify-center px-5"
       onClick={onClose}
     >
-      {/* Arka plan */}
       <div className="absolute inset-0 bg-[#1F2B4D]/40 backdrop-blur-sm bubble-backdrop" />
 
-      {/* Baloncuk kartı */}
       <div
         dir="rtl"
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-xs bubble-pop rounded-[26px] bg-white shadow-2xl px-6 pt-8 pb-6 text-center"
       >
-        {/* Konuşma balonu ucu */}
         <div className="absolute -top-[10px] left-1/2 -translate-x-1/2 h-5 w-5 rotate-45 bg-white" />
 
         <button
@@ -108,7 +115,6 @@ function ServiceBubble({ service, onClose }) {
           <FaTimes size={13} />
         </button>
 
-        {/* Görsel / ikon */}
         <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#EEF5FF] to-[#DCE9FA] text-[#4366AF] shadow-inner">
           {service.image ? (
             <img
@@ -127,9 +133,7 @@ function ServiceBubble({ service, onClose }) {
           {service.title}
         </h3>
 
-        <p className="text-sm text-gray-500 leading-relaxed">
-          {service.desc}
-        </p>
+        <p className="text-sm text-gray-500 leading-relaxed">{service.desc}</p>
 
         <div className="mt-5 mx-auto h-[2px] w-14 bg-gradient-to-r from-transparent via-[#C4A24F] to-transparent" />
       </div>
@@ -140,7 +144,6 @@ function ServiceBubble({ service, onClose }) {
 export default function ServicesPage() {
   const [active, setActive] = useState(null);
 
-  // Baloncuk açıkken arka planın kaymasını engelle
   useEffect(() => {
     document.body.style.overflow = active ? "hidden" : "";
     return () => {
@@ -148,7 +151,6 @@ export default function ServicesPage() {
     };
   }, [active]);
 
-  // ESC ile kapatma
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setActive(null);
     window.addEventListener("keydown", onKey);
@@ -158,7 +160,7 @@ export default function ServicesPage() {
   return (
     <main
       dir="rtl"
-      className="relative min-h-screen overflow-hidden bg-[#d0dced]"
+      className={`${elMessiri.className} relative min-h-screen overflow-hidden bg-[#d0dced]`}
     >
       {/* Background shapes */}
       <div className="absolute -right-40 -top-40 h-[520px] w-[620px] rounded-[45%] bg-white" />
@@ -166,11 +168,16 @@ export default function ServicesPage() {
 
       <section className="relative z-10 mx-auto flex w-full max-w-2xl flex-col items-center px-4 sm:px-6 pt-10 sm:pt-14 pb-20">
         {/* Back link */}
+        <Link
+          href="/kartvizitMevaredQR"
+          className="self-start flex items-center gap-1.5 text-xs sm:text-sm text-[#4366AF] font-medium mb-6 sm:mb-8 hover:text-[#1F2B4D] transition-colors reveal r0"
+        >
+          <FaChevronRight size={11} />
+          صفحه اصلی
+        </Link>
 
         {/* Title */}
-        <h1
-          className={`${elMessiri.className} reveal r1 text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2B4D] text-center tracking-tight`}
-        >
+        <h1 className="reveal r1 text-3xl sm:text-4xl md:text-5xl font-bold text-[#1F2B4D] text-center tracking-tight">
           خدمات مجموعه ما
         </h1>
 
@@ -264,7 +271,8 @@ export default function ServicesPage() {
           }
         }
         .bubble-pop {
-          animation: bubble-pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          animation: bubble-pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)
+            forwards;
         }
       `}</style>
     </main>
