@@ -14,7 +14,7 @@
             "tr": "Espresso",
             "fa": "اسپرسو"
           },
-          "price": "100"
+          "price": "110"
         },
         {
           "id": 2,
@@ -22,7 +22,7 @@
             "tr": "Tekli Espresso",
             "fa": "اسپرسو سینگل"
           },
-          "price": "85"
+          "price": "95"
         },
         {
           "id": 3,
@@ -183,7 +183,7 @@
             "tr": "Buzlu Mocha",
             "fa": "آیس موکا"
           },
-          "price": "210"
+          "price": "180"
         },
         {
           "id": 10,
@@ -199,7 +199,7 @@
             "tr": "Ballı Latte",
             "fa": "هانی لاته"
           },
-          "price": "190"
+          "price": "220"
         },
         {
           "id": 53,
@@ -207,7 +207,7 @@
             "tr": "Buzlu Cappuccino",
             "fa": "آيس كايوچینو"
           },
-          "price": "180"
+          "price": "190"
         },
         {
           "id": 54,
@@ -215,7 +215,7 @@
             "tr": "Buzlu Karamel Machiato",
             "fa": "آيس كارامل ماكياتو"
           },
-          "price": "210"
+          "price": "205"
         },
         {
           "id": 58,
@@ -231,7 +231,23 @@
             "tr": "Affogato",
             "fa": "آفوگاتو"
           },
-          "price": "210"
+          "price": "180"
+        },
+        {
+          "id": 73,
+          "name": {
+            "tr": "Buzlu Latte Arabica",
+            "fa": "آیس لاته عربیکا"
+          },
+          "price": "220"
+        },
+        {
+          "id": 74,
+          "name": {
+            "tr": "Arabica Buzlu Americano",
+            "fa": "آیس آمریکانو عربیکا"
+          },
+          "price": "180"
         }
       ]
     },
@@ -410,7 +426,7 @@
             "tr": "Ananas Mocktaili",
             "fa": "ماکتیل آناناس"
           },
-          "price": "180"
+          "price": "145"
         },
         {
           "id": 22,
@@ -418,7 +434,7 @@
             "tr": "Nar Mocktaili",
             "fa": "ماکتیل انار"
           },
-          "price": "175"
+          "price": "200"
         },
         {
           "id": 23,
@@ -474,7 +490,7 @@
             "tr": "Buzlu Beyaz (Ice White)",
             "fa": "آیس وایت"
           },
-          "price": "165"
+          "price": "180"
         },
         {
           "id": 68,
@@ -507,7 +523,7 @@
             "tr": "Beyaz Çikolata",
             "fa": "وایت چاکلت"
           },
-          "price": "155"
+          "price": "170"
         },
         {
           "id": 49,
@@ -532,6 +548,47 @@
             "fa": "کاپوچینو پودری"
           },
           "price": "160"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": {
+        "tr": "Kek ve Kurabiye",
+        "fa": "کیک و کوکی"
+      },
+      "items": [
+        {
+          "id": 69,
+          "name": {
+            "tr": "Çikolatalı Kurabiye",
+            "fa": "کوکی شکلاتی"
+          },
+          "price": "80"
+        },
+        {
+          "id": 70,
+          "name": {
+            "tr": "Diyet Kurabiye",
+            "fa": "کوکی رژیمی"
+          },
+          "price": "80"
+        },
+        {
+          "id": 71,
+          "name": {
+            "tr": "Beyaz Çikolatalı Kurabiye",
+            "fa": "وایت کوکی"
+          },
+          "price": "80"
+        },
+        {
+          "id": 72,
+          "name": {
+            "tr": "Ev Yapımı Kek",
+            "fa": "کیک خانگی"
+          },
+          "price": "80"
         }
       ]
     }

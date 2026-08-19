@@ -42,7 +42,7 @@ export default function CoffeeCupButton({
           bg-gradient-to-br from-[#c2b6ad] via-[#7ab6ca] to-[#6de6f1]
           border-2 border-[#d9b382]/50 shadow-lg shadow-black/40
           transition-transform duration-300 hover:scale-110 active:scale-95
-          ${justAdded ? "cup-jiggle" : ""}`}
+          ${justAdded ? "cup-jigigle" : ""}`}
       >
         {/* tıklama patlaması */}
         {burst > 0 && (
