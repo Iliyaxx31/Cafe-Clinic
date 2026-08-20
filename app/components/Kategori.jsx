@@ -1,9 +1,15 @@
 "use client";
 import React from "react";
+import { motion } from "framer-motion";
 
 const Kategori = ({ Icon, text, size, isActive, onClick }) => {
   return (
-    <div className="flex flex-col items-center py-0.5 backdrop-grayscale">
+    <motion.div 
+      whileHover={{ scale: 1.05, y: -3 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      className="flex flex-col items-center py-0.5 backdrop-grayscale"
+    >
       <div className="h-[50px] flex items-center">
         <Icon
           size={size}
@@ -13,10 +19,14 @@ const Kategori = ({ Icon, text, size, isActive, onClick }) => {
           }`}
         />
       </div>
-      <span className="p-1 lg:text-[17px] lg:mt-2 text-shadow-lg text-center w-28 font-black text-gray-700/90">
+      <motion.span 
+        initial={{ opacity: 0.8 }}
+        animate={{ opacity: isActive ? 1 : 0.8 }}
+        className="p-1 lg:text-[17px] lg:mt-2 text-shadow-lg text-center w-28 font-black text-gray-700/90"
+      >
         {text}
-      </span>
-    </div>
+      </motion.span>
+    </motion.div>
   );
 };
 

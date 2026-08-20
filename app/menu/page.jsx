@@ -26,9 +26,6 @@ const LABELS = {
   },
 };
 
-// Fiyat string'ini direkt topluma uygun tam sayıya çevirir.
-// Nokta varsa sadece öncesi sayılır, sonrası tamamen atılır (ondalık yok):
-// "85.000" -> 85, "100" -> 100. Yani 85.000 + 100 = 185.
 function parsePrice(price) {
   if (price === undefined || price === null) return 0;
   const str = String(price).trim();
@@ -47,7 +44,7 @@ function formatDisplayPrice(price) {
 export default function StaffMenuPage() {
   const [lang, setLang] = useState("tr");
   const [activeCat, setActiveCat] = useState("all");
-  const [cart, setCart] = useState({}); // { itemId: quantity }
+  const [cart, setCart] = useState({});
   const [secretClicks, setSecretClicks] = useState(0);
   const [discoMode, setDiscoMode] = useState(false);
   const isRtl = lang === "fa";
@@ -65,15 +62,17 @@ export default function StaffMenuPage() {
     });
   };
 
-  const visibleCategories =
-    activeCat === "all"
-      ? data.categories
-      : data.categories.filter((c) => c.id === activeCat);
+  const visibleCategories = useMemo(() => {
+    if (activeCat === "all") {
+      return data.categories || [];
+    }
+    return data.categories?.filter((c) => c.id === activeCat) || [];
+  }, [activeCat]);
 
   const allItemsById = useMemo(() => {
     const map = {};
-    data.categories.forEach((cat) =>
-      cat.items.forEach((item) => (map[item.id] = item))
+    data.categories?.forEach((cat) =>
+      cat.items?.forEach((item) => (map[item.id] = item))
     );
     return map;
   }, []);
@@ -115,14 +114,13 @@ export default function StaffMenuPage() {
         (discoMode ? "animate-disco" : "")
       }
     >
-      {/* Arkaplanda yavaşça dolaşan bulanık neon lekeler */}
+      {/* Arkaplan */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-pink-600/25 blur-3xl animate-blob-a" />
         <div className="absolute top-1/3 -right-24 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl animate-blob-b" />
         <div className="absolute bottom-0 left-1/4 h-64 w-64 rounded-full bg-lime-400/10 blur-3xl animate-blob-c" />
       </div>
 
-      {/* جانه من — köşede saklı, zeminle neredeyse aynı renkte, arayanın bulacağı boyutta */}
       <span
         className="pointer-events-none fixed bottom-1 left-1 z-50 select-none text-[8px] font-bold text-[#2f1452]"
         aria-hidden="true"
@@ -137,7 +135,7 @@ export default function StaffMenuPage() {
             onClick={handleSecretTap}
             className="cursor-default text-2xl font-black uppercase tracking-wide text-pink-300 animate-neon-flicker"
           >
-            {data.cafeName}
+            {data.cafeName || "CAFE"}
           </h1>
           <p className="mt-1 text-xs font-bold uppercase tracking-widest text-lime-300">
             {t.sub}
@@ -145,13 +143,13 @@ export default function StaffMenuPage() {
         </div>
         <button
           onClick={() => setLang(lang === "tr" ? "fa" : "tr")}
-          className="shrink-0 rounded-lg border border-pink-400 px-4 py-2.5 text-sm font-bold text-pink-300 transition-all hover:bg-pink-500 hover:text-[#0b0014] hover:scale-105 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-pink-400 focus-visible:outline-offset-2"
+          className="shrink-0 rounded-lg border border-pink-400 px-4 py-2.5 text-sm font-bold text-pink-300 transition-all hover:bg-pink-500 hover:text-[#0b0014] hover:scale-105 active:scale-95"
         >
           {t.lang}
         </button>
       </div>
 
-      {/* Sabit üst blok: toplam + kategori sekmeleri — kaydırırken hep ekranda kalır */}
+      {/* Sabit üst blok */}
       <div className="sticky top-0 z-20 bg-[#0b0014]/95 backdrop-blur border-b border-pink-500/25">
         <div className="max-w-2xl mx-auto px-5 pt-3 pb-1">
           {totalCount === 0 ? (
@@ -179,122 +177,135 @@ export default function StaffMenuPage() {
           )}
         </div>
 
-        <nav className="max-w-2xl mx-auto flex gap-2 overflow-x-auto px-5 py-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          <button
-            onClick={() => setActiveCat("all")}
-            className={
-              "shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold transition-all hover:-translate-y-0.5 " +
-              (activeCat === "all"
-                ? "border-pink-400 bg-pink-500 text-[#0b0014]"
-                : "border-pink-500/25 bg-[#1a0a2c] text-pink-200/60 hover:border-pink-400/60 hover:text-pink-100")
-            }
-          >
-            {t.all}
-          </button>
-          {data.categories.map((cat) => (
+        {/* Kategori butonları - PC UYUMLU, TAŞMA YOK */}
+        <div className="max-w-2xl mx-auto px-5 py-3">
+          <div className="flex flex-wrap gap-2">
             <button
-              key={cat.id}
-              onClick={() => setActiveCat(cat.id)}
+              onClick={() => setActiveCat("all")}
               className={
                 "shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold transition-all hover:-translate-y-0.5 " +
-                (activeCat === cat.id
+                (activeCat === "all"
                   ? "border-pink-400 bg-pink-500 text-[#0b0014]"
                   : "border-pink-500/25 bg-[#1a0a2c] text-pink-200/60 hover:border-pink-400/60 hover:text-pink-100")
               }
             >
-              {cat.name[lang] || cat.name.fa || cat.name.tr}
+              {t.all}
             </button>
-          ))}
-        </nav>
+            {data.categories && data.categories.length > 0 ? (
+              data.categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCat(cat.id)}
+                  className={
+                    "shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold transition-all hover:-translate-y-0.5 " +
+                    (activeCat === cat.id
+                      ? "border-pink-400 bg-pink-500 text-[#0b0014]"
+                      : "border-pink-500/25 bg-[#1a0a2c] text-pink-200/60 hover:border-pink-400/60 hover:text-pink-100")
+                  }
+                >
+                  {cat.name?.[lang] || cat.name?.fa || cat.name?.tr || cat.id}
+                </button>
+              ))
+            ) : (
+              <p className="text-pink-200/40 text-sm py-2">Kategori bulunamadı</p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* İçerik */}
       <main className="relative max-w-2xl mx-auto px-5">
-        {visibleCategories.map((cat) => {
-          const catName = cat.name[lang] || cat.name.fa || cat.name.tr;
-          return (
-            <section
-              key={cat.id}
-              className="mt-4 rounded-2xl border border-pink-500/25 bg-[#170a28] px-4 pb-2 pt-1"
-            >
-              <h2 className="mt-4 mb-1.5 text-base font-black uppercase tracking-widest text-lime-300">
-                {catName}
-              </h2>
-              <ul className="list-none m-0 p-0">
-                {cat.items.map((item) => {
-                  const itemName =
-                    item.name[lang] || item.name.fa || item.name.tr;
-                  const displayPrice = formatDisplayPrice(item.price);
-                  const isEmpty = displayPrice === "—";
-                  const qty = cart[item.id] || 0;
-                  const selected = qty > 0;
+        {visibleCategories && visibleCategories.length > 0 ? (
+          visibleCategories.map((cat) => {
+            const catName = cat.name?.[lang] || cat.name?.fa || cat.name?.tr || cat.id;
+            return (
+              <section
+                key={cat.id}
+                className="mt-4 rounded-2xl border border-pink-500/25 bg-[#170a28] px-4 pb-2 pt-1"
+              >
+                <h2 className="mt-4 mb-1.5 text-base font-black uppercase tracking-widest text-lime-300">
+                  {catName}
+                </h2>
+                <ul className="list-none m-0 p-0">
+                  {cat.items && cat.items.length > 0 ? (
+                    cat.items.map((item) => {
+                      const itemName =
+                        item.name?.[lang] || item.name?.fa || item.name?.tr || item.id;
+                      const displayPrice = formatDisplayPrice(item.price);
+                      const isEmpty = displayPrice === "—";
+                      const qty = cart[item.id] || 0;
+                      const selected = qty > 0;
 
-                  return (
-                    <li key={item.id}>
-                      <button
-                        type="button"
-                        disabled={isEmpty}
-                        onClick={() => addOne(item)}
-                        className={
-                          "w-full flex items-center gap-2.5 border-b border-pink-500/15 py-3.5 text-lg last:border-b-0 sm:text-xl transition-all duration-150 " +
-                          (isRtl ? "text-right " : "text-left ") +
-                          (isEmpty
-                            ? "opacity-30 cursor-not-allowed"
-                            : "active:scale-[0.98] active:bg-pink-500/10 " +
-                              (selected
-                                ? "bg-pink-500/10 border-l-2 border-l-pink-400"
-                                : ""))
-                        }
-                      >
-                        {/* Miktar rozeti */}
-                        <span
-                          key={qty}
-                          className={
-                            "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-black transition-colors " +
-                            (selected
-                              ? "bg-lime-300 text-[#0b0014] animate-pop-in"
-                              : "bg-transparent text-transparent")
-                          }
-                        >
-                          {qty > 0 ? qty : ""}
-                        </span>
-
-                        <span className="font-bold flex-1 truncate text-pink-50">
-                          {itemName}
-                        </span>
-
-                        <span className="min-w-[14px] flex-1 border-b-2 border-dotted border-pink-500/20" />
-
-                        <span
-                          className={
-                            "whitespace-nowrap font-black tabular-nums " +
-                            (isEmpty
-                              ? "text-pink-200/30 font-medium"
-                              : "text-pink-300")
-                          }
-                        >
-                          {isEmpty ? displayPrice : `${displayPrice} ${CURRENCY}`}
-                        </span>
-
-                        {/* Azaltma butonu, sadece seçiliyken görünür */}
-                        {selected && (
-                          <span
-                            role="button"
-                            tabIndex={0}
-                            onClick={(e) => removeOne(item.id, e)}
-                            className="ml-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-pink-400/70 text-pink-300 text-lg font-black transition-transform hover:bg-pink-500/20 hover:scale-110 active:scale-90"
+                      return (
+                        <li key={item.id}>
+                          <button
+                            type="button"
+                            disabled={isEmpty}
+                            onClick={() => addOne(item)}
+                            className={
+                              "w-full flex items-center gap-2.5 border-b border-pink-500/15 py-3.5 text-lg last:border-b-0 sm:text-xl transition-all duration-150 " +
+                              (isRtl ? "text-right " : "text-left ") +
+                              (isEmpty
+                                ? "opacity-30 cursor-not-allowed"
+                                : "active:scale-[0.98] active:bg-pink-500/10 " +
+                                  (selected
+                                    ? "bg-pink-500/10 border-l-2 border-l-pink-400"
+                                    : ""))
+                            }
                           >
-                            −
-                          </span>
-                        )}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          );
-        })}
+                            <span
+                              key={qty}
+                              className={
+                                "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-black transition-colors " +
+                                (selected
+                                  ? "bg-lime-300 text-[#0b0014] animate-pop-in"
+                                  : "bg-transparent text-transparent")
+                              }
+                            >
+                              {qty > 0 ? qty : ""}
+                            </span>
+
+                            <span className="font-bold flex-1 truncate text-pink-50">
+                              {itemName}
+                            </span>
+
+                            <span className="min-w-[14px] flex-1 border-b-2 border-dotted border-pink-500/20" />
+
+                            <span
+                              className={
+                                "whitespace-nowrap font-black tabular-nums " +
+                                (isEmpty
+                                  ? "text-pink-200/30 font-medium"
+                                  : "text-pink-300")
+                              }
+                            >
+                              {isEmpty ? displayPrice : `${displayPrice} ${CURRENCY}`}
+                            </span>
+
+                            {selected && (
+                              <span
+                                role="button"
+                                tabIndex={0}
+                                onClick={(e) => removeOne(item.id, e)}
+                                className="ml-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-pink-400/70 text-pink-300 text-lg font-black transition-transform hover:bg-pink-500/20 hover:scale-110 active:scale-90"
+                              >
+                                −
+                              </span>
+                            )}
+                          </button>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <p className="text-pink-200/40 text-sm py-4">Bu kategoride ürün yok</p>
+                  )}
+                </ul>
+              </section>
+            );
+          })
+        ) : (
+          <p className="text-center text-pink-200/40 py-10">Hiç kategori bulunamadı</p>
+        )}
       </main>
 
       <style jsx global>{`
@@ -323,15 +334,6 @@ export default function StaffMenuPage() {
           }
           50% {
             transform: translate(30px, -40px) scale(0.9);
-          }
-        }
-        @keyframes wiggle {
-          0%,
-          100% {
-            transform: rotate(-8deg) scale(1);
-          }
-          50% {
-            transform: rotate(4deg) scale(1.08);
           }
         }
         @keyframes neon-flicker {
