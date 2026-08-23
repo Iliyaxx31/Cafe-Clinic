@@ -9,7 +9,14 @@ import Footer from "./components/Footer";
 import Cart from "./components/Cart";
 import IntroScreen from "./components/IntroScreen";
 import CoffeeCupButton from "./components/CoffeeCupButton";
+import NoticeModal from "./components/NoticeModal";
 
+// سلام ب مناسبت شروع به کار سایتمون ، امروز هر سفارش شامل ۱۰ درصد تخفیف میشه :) ❤️
+
+/*
+ ! ADRESler
+ 
+ */
 export default function Home() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [data, setData] = useState(null);
@@ -17,8 +24,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
-  const [notice, setNotice] = useState(null);
-  const [showNotice, setShowNotice] = useState(false);
   const [started, setStarted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
@@ -39,12 +44,6 @@ export default function Home() {
     document.addEventListener("fullscreenchange", handleFsChange);
     return () => document.removeEventListener("fullscreenchange", handleFsChange);
   }, []);
-
-  useEffect(() => {
-    if (showNotice && audioRef.current) {
-      audioRef.current.play().catch(() => console.log("Ses çalınamadı"));
-    }
-  }, [showNotice]);
 
   useEffect(() => {
     if (cartCount === 0) return;
@@ -78,12 +77,6 @@ export default function Home() {
     }
 
     setStarted(true);
-
-    if (notice) {
-      setTimeout(() => {
-        setShowNotice(true);
-      }, 2000);
-    }
   };
 
   const updateCart = (item, price, newQuantity) => {
@@ -121,18 +114,6 @@ export default function Home() {
       console.error("Veri yüklenemedi:", error);
     } finally {
       setLoading(false);
-    }
-
-    try {
-      const noticeRes = await fetch("/api/notice");
-      if (noticeRes.ok) {
-        const noticeData = await noticeRes.json();
-        if (noticeData.active && noticeData.text) {
-          setNotice(noticeData);
-        }
-      }
-    } catch (error) {
-      console.error("Notice yüklenemedi:", error);
     }
   };
 
@@ -234,20 +215,10 @@ export default function Home() {
         burst={burst}
       />
 
-      {showNotice && notice && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center" dir="rtl">
-            <h2 className="text-xl font-bold mb-4">📢 اطلاعیه</h2>
-            <p className="text-gray-700 mb-6">{notice.text}</p>
-            <button
-              onClick={() => setShowNotice(false)}
-              className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600"
-            >
-              متوجه شدم
-            </button>
-          </div>
-        </div>
-      )}
+      <NoticeModal
+        trigger={started}
+        onShow={() => audioRef.current?.play().catch(() => console.log("Ses çalınamadı"))}
+      />
 
       {showCart && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">

@@ -39,7 +39,7 @@ export default function CoffeeCupButton({
         onClick={onClick}
         aria-label="سبد خرید"
         className={`coffee-cup-btn relative flex items-center justify-center w-16 h-16 rounded-full
-          bg-gradient-to-br from-[#c2b6ad] via-[#7ab6ca] to-[#6de6f1]
+          bg-gradient-to-br from-[#a62222] via-[#ff1616] to-[#ff1111]
           border-2 border-[#d9b382]/50 shadow-lg shadow-black/40
           transition-transform duration-300 hover:scale-110 active:scale-95
           ${justAdded ? "cup-jigigle" : ""}`}
