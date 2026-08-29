@@ -10,11 +10,14 @@ export default function AdminDashboard() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showCatModal, setShowCatModal] = useState(false);
   const [notice, setNotice] = useState({ active: false, text: "" });
+  const [powerOutageMode, setPowerOutageMode] = useState(false);
+  const [savingPower, setSavingPower] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     fetchData();
     fetchNotice();
+    fetchSettings();
   }, []);
 
   const fetchNotice = async () => {
@@ -32,6 +35,36 @@ export default function AdminDashboard() {
       body: JSON.stringify(notice),
     });
     alert("اطلاعیه ذخیره شد!");
+  };
+
+  const fetchSettings = async () => {
+    const res = await fetch("/api/settings");
+    if (res.ok) {
+      const settings = await res.json();
+      setPowerOutageMode(!!settings.powerOutageMode);
+    }
+  };
+
+  const togglePowerOutage = async () => {
+    setSavingPower(true);
+    const newValue = !powerOutageMode;
+    try {
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ powerOutageMode: newValue }),
+      });
+      if (res.ok) {
+        setPowerOutageMode(newValue);
+      } else {
+        alert("خطا در ذخیره وضعیت برق");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("خطا در ارتباط با سرور");
+    } finally {
+      setSavingPower(false);
+    }
   };
 
   const fetchData = async () => {
@@ -142,6 +175,23 @@ export default function AdminDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
+
+        {/* قطعی برق */}
+        <div className={`rounded-lg shadow p-4 mb-6 border-2 ${powerOutageMode ? "bg-amber-50 border-amber-400" : "bg-white border-transparent"}`}>
+          <h2 className="text-lg font-bold mb-3">⚡ حالت قطعی برق</h2>
+          <p className="text-sm text-gray-600 mb-3">
+            وقتی فعال باشد، در سایت مشتری یک دکمه نشان داده می‌شود که نوشیدنی‌های قابل تهیه بدون برق را نمایش می‌دهد.
+          </p>
+          <button
+            onClick={togglePowerOutage}
+            disabled={savingPower}
+            className={`px-5 py-2 rounded-lg font-bold text-white transition-colors disabled:opacity-50 ${
+              powerOutageMode ? "bg-amber-500 hover:bg-amber-600" : "bg-gray-400 hover:bg-gray-500"
+            }`}
+          >
+            {savingPower ? "..." : powerOutageMode ? "⚡ فعال است - غیرفعال کن" : "غیرفعال است - فعال کن"}
+          </button>
+        </div>
 
         {/* GUNUN NOTU BOLUMU */}
         <div className="bg-white rounded-lg shadow p-4 mb-6">
@@ -303,6 +353,9 @@ function AddItemModal({ onClose, onSave, categoryName }) {
       <div className="bg-white rounded-lg p-6 w-96">
         <h2 className="text-xl font-bold mb-2">افزودن محصول جدید</h2>
         <p className="text-gray-600 mb-4">دسته‌بندی: <span className="font-semibold">{categoryName}</span></p>
+        <p className="text-xs text-amber-600 mb-3">
+          نکته: اگر این محصول در قطعی برق هم قابل تهیه است، در انتهای نام یک فاصله و حرف E انگلیسی بزرگ اضافه کنید (مثال: «چای E»)
+        </p>
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder="نام محصول *" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2 mb-3 border rounded" required />
           <textarea placeholder="توضیحات" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-2 mb-4 border rounded" rows="3" />

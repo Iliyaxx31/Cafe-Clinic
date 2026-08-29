@@ -1,4 +1,5 @@
 {
-  "maintenanceMode": true,
-  "maintenanceMessage": "متأسفانه به دلیل مشکل فنی، سایت موقتاً در دسترس نیست. لطفاً ."
+  "maintenanceMode": false,
+  "maintenanceMessage": "متأسفانه به دلیل مشکل فنی، سایت موقتاً در دسترس نیست. لطفاً .",
+  "powerOutageMode": true
 }

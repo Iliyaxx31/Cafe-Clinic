@@ -307,19 +307,19 @@
         },
         {
           "id": 20,
-          "name": "موهیتو",
+          "name": "موهیتو E",
           "description": "نوشیدنی خنک با نعناع و لیمو",
           "img": "/ice-drink/mohito.png"
         },
         {
           "id": 21,
-          "name": "ماکتیل آناناس",
+          "name": "ماکتیل آناناس E",
           "description": "",
           "img": "/ice-drink/ananass.png"
         },
         {
           "id": 22,
-          "name": "ماکتیل انار",
+          "name": "ماکتیل انار E",
           "description": "آناناس در مایع شیرین و غلیظ",
           "img": "/ice-drink/nar.png"
         },
@@ -336,13 +336,13 @@
           "img": "/ice-drink/safran.png"
         },
         {
-          "name": "لمون چرى",
+          "name": "لمون چرى E",
           "description": "طعمی ترش و شیرین با عطر لیمو",
           "img": "/ice-drink/lemon.png",
           "id": 43
         },
         {
-          "name": "باریستا  اسپشال",
+          "name": "باریستا  اسپشال E",
           "description": "",
           "img": "/ice-drink/aryacan.png",
           "id": 44
@@ -354,13 +354,13 @@
           "id": 45
         },
         {
-          "name": "آیس چاکلت",
+          "name": "آیس چاکلت E",
           "description": "آیس شکلات، نوشیدنی خنک با طعم غنی شکلات، شیرین و دلچسب.\n\n",
           "img": "/da.jpg",
           "id": 60
         },
         {
-          "name": "آیس وایت",
+          "name": "آیس وایت E",
           "description": "آیس وایت، نوشیدنی خنک و کرم‌دار با شیر سرد و طعمی دلنشین و ملایم",
           "img": "/da.jpg",
           "id": 61
