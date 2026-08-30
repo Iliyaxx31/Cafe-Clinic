@@ -15,10 +15,37 @@ import NoticeModal from "./components/NoticeModal";
 
 /*
  ! ADRESler
- 
+
  */
 
+// Helper function to extract Persian name from item name (handles both string and {fa, tr} object)
+const stripMarker = (name) => {
+  if (typeof name === 'object' && name !== null) {
+    return name.fa || name.tr || '';
+  }
+  return name;
+};
 
+// Helper function to check if an item can be made without power
+// Items in the "Elektrik Yok" category in power.json don't require electricity
+const isNoPowerItem = (name) => {
+  const itemName = typeof name === 'object' && name !== null ? (name.fa || name.tr || '') : name;
+  const noPowerItems = [
+    'آيس كايوچینو',
+    'لیموناد',
+    'موهیتو',
+    'ماکتیل آناناس',
+    'ماکتیل انار',
+    'لمون چرى',
+    'باریستا  اسپشال',
+    'آیس چاکلت',
+    'آیس وایت',
+    'وایت کوکی',
+    'کیک خانگی',
+    'کوکی رژیمی',
+  ];
+  return noPowerItems.some(noPower => itemName.includes(noPower));
+};
 
 
 export default function Home() {

@@ -1,7 +1,7 @@
 "use client";
 
 import Produc from "./Produc";
-import elektrikData from "@/data/power.json";
+import elektrikData from "@/json/power.json";
 
 export default function PowerOutageModal({
   prices,
