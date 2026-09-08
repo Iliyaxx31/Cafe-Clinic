@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cafeclinic.com/sitemap.xml

@@ -1,0 +1,85 @@
+{
+  "cafeName": "Cafe Clinic",
+  "categories": [
+    {
+      "id": 5,
+      "name": "Elektrik Yok",
+      "items": [
+        {
+          "name": "آيس كايوچینو",
+          "description": "نوشیدنی سرد با پودر کاپوچینو و سس شکلات، طعمی شیرین و خنکنوشیدنی سرد با پودر کاپوچینو و سس شکلات، طعمی شیرین و خنک",
+          "img": "/da.jpg",
+          "id": 74
+        },
+        {
+          "id": 19,
+          "name": "لیموناد",
+          "description": "نوشیدنی گوارا با لیموی تازه",
+          "img": "/ice-drink/limonata.png"
+        },
+        {
+          "id": 20,
+          "name": "موهیتو",
+          "description": "نوشیدنی خنک با نعناع و لیمو",
+          "img": "/ice-drink/mohito.png"
+        },
+        {
+          "id": 21,
+          "name": "ماکتیل آناناس",
+          "description": "",
+          "img": "/ice-drink/ananass.png"
+        },
+        {
+          "id": 22,
+          "name": "ماکتیل انار",
+          "description": "آناناس در مایع شیرین و غلیظ",
+          "img": "/ice-drink/nar.png"
+        },
+        {
+          "name": "لمون چرى",
+          "description": "طعمی ترش و شیرین با عطر لیمو",
+          "img": "/ice-drink/lemon.png",
+          "id": 43
+        },
+        {
+          "name": "باریستا  اسپشال",
+          "description": "",
+          "img": "/ice-drink/aryacan.png",
+          "id": 44
+        },
+        {
+          "name": "آیس چاکلت",
+          "description": "آیس شکلات، نوشیدنی خنک با طعم غنی شکلات، شیرین و دلچسب.\n\n",
+          "img": "/da.jpg",
+          "id": 60
+        },
+        {
+          "name": "آیس وایت",
+          "description": "آیس وایت، نوشیدنی خنک و کرم‌دار با شیر سرد و طعمی دلنشین و ملایم",
+          "img": "/da.jpg",
+          "id": 61
+        },
+        {
+             "name": "وایت کوکی",
+          "description": "",
+          "img": "/da.jpg",
+          "id": 71
+        },
+        {
+               "name": "کیک خانگی",
+          "description": "",
+          "img": "/da.jpg",
+          "id": 72
+        },
+        {
+             "name": "کوکی رژیمی",
+          "description": "کوکی رژیمی، کم‌کالری و مناسب ",
+          "img": "/da.jpg",
+          "id": 70
+        }
+
+        
+      ]
+    }
+  ]
+}
