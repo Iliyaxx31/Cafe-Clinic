@@ -246,18 +246,6 @@
       "name": "چای و دمنوش",
       "items": [
         {
-          "id": 16,
-          "name": "",
-          "description": "چای داغ هندی با ادویه‌های معطر",
-          "img": "/da.jpg"
-        },
-        {
-          "id": 17,
-          "name": "",
-          "description": "",
-          "img": "/da.jpg"
-        },
-        {
           "id": 18,
           "name": "چای",
           "description": "چای دم کرده کلاسیک",
